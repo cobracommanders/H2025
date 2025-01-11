@@ -28,8 +28,8 @@ public class Robot extends TimedRobot{
     public final Timer setupTimer = new Timer();
     public double setupTime  = 0;
 
-    private RobotManager robotManager = new RobotManager(ScoringSubsystem.getInstance());
-    private RobotCommands robotCommands = new RobotCommands(robotManager);
+    public static RobotManager robotManager = new RobotManager(ScoringSubsystem.getInstance());
+    public static RobotCommands robotCommands = new RobotCommands(robotManager);
     // public static int coordinateFlip = 1;
     // public static int rotationOffset = 0;
 
@@ -43,15 +43,15 @@ public class Robot extends TimedRobot{
 
     @Override
     public void robotInit() {
-
-        //autoChooser = AutoBuilder.buildAutoChooser();
         controls.configureDefaultCommands();
         controls.configureDriverCommands();
 
         NamedCommands.registerCommand("score", robotCommands.scoreCommand());
-        NamedCommands.registerCommand("return to idle", robotCommands.scoreCommand());
-       // CommandSwerveDrivetrain.getInstance();
+        NamedCommands.registerCommand("return to idle", robotCommands.idleCommand());
+        CommandSwerveDrivetrain.getInstance();
         ScoringSubsystem.getInstance();
+
+        autoChooser = AutoBuilder.buildAutoChooser();
 
         // Limelight.getInstance();
         

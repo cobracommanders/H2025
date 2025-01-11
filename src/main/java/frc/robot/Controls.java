@@ -31,9 +31,6 @@ public class Controls {
     private final double TurtleAngularRate = Math.PI * 0.5; // .75 rotation per second max angular velocity.  Adjust for max turning rate speed.
     private double AngularRate = MaxAngularRate; // This will be updated when turtle and reset to MaxAngularRate
 
-    private RobotManager robotManager = new RobotManager(ScoringSubsystem.getInstance());
-    private RobotCommands robotCommands = new RobotCommands(robotManager);
-
      SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
       .withDeadband(MaxSpeed * 0.1) // Deadband is handled on input
@@ -67,7 +64,7 @@ public class Controls {
 
     public void configureDriverCommands() {
         driver.rightBumper().onTrue(runOnce(() ->CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
-        driver.rightTrigger().onTrue(robotCommands.scoreCommand());
-        driver.rightTrigger().onFalse(robotCommands.idleCommand());
+        driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
+        driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
     }
 }

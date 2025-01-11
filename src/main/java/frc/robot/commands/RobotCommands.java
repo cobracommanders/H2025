@@ -17,7 +17,7 @@ public class RobotCommands {
 
   public Command scoreCommand() {
     return Commands.runOnce(robot::scoreRequest, requirements)
-        .andThen(robot.waitForState(RobotState.IDLE));
+        .andThen(robot.waitForState(RobotState.SCORE));
   }
 
   public Command idleCommand() {
