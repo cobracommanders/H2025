@@ -10,11 +10,12 @@ import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.ReturnToIdle;
-import frc.robot.commands.Score;
+import frc.robot.commands.RobotCommands;
+import frc.robot.commands.RobotManager;
 import frc.robot.drivers.Xbox;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.TunerConstants;
+import frc.robot.subsystems.Scoring.ScoringSubsystem;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
@@ -29,6 +30,9 @@ public class Controls {
     private final double MaxAngularRate = Math.PI * 3.5; // .75 rotation per second max angular velocity.  Adjust for max turning rate speed.
     private final double TurtleAngularRate = Math.PI * 0.5; // .75 rotation per second max angular velocity.  Adjust for max turning rate speed.
     private double AngularRate = MaxAngularRate; // This will be updated when turtle and reset to MaxAngularRate
+
+    private RobotManager robotManager = new RobotManager(ScoringSubsystem.getInstance());
+    private RobotCommands robotCommands = new RobotCommands(robotManager);
 
      SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
@@ -63,7 +67,7 @@ public class Controls {
 
     public void configureDriverCommands() {
         driver.rightBumper().onTrue(runOnce(() ->CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get() == Alliance.Red?180:0)));
-        driver.rightTrigger().whileTrue(new Score());
-        driver.rightTrigger().whileFalse(new ReturnToIdle());
+        driver.rightTrigger().onTrue(robotCommands.scoreCommand());
+        driver.rightTrigger().onFalse(robotCommands.idleCommand());
     }
 }
