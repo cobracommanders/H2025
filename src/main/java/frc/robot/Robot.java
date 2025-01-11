@@ -1,101 +1,143 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.ScoringSubsystem;
+import java.util.List;
+import java.util.Optional;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
-/**
- * The methods in this class are called automatically corresponding to each mode, as described in
- * the TimedRobot documentation. If you change the name of this class or the package after creating
- * this project, you must also update the Main.java file in the project.
- */
-public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
 
-  private final RobotContainer m_robotContainer;
+public class Robot extends TimedRobot{
+    public static final double DEFAULT_PERIOD = 0.02;
+    public final Timer setupTimer = new Timer();
+    public double setupTime  = 0;
+    // public static int coordinateFlip = 1;
+    // public static int rotationOffset = 0;
 
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
-  public Robot() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-  }
+    public static Optional<Alliance> alliance = Optional.empty();
+    public static final Controls controls = new Controls();
 
-  /**
-   * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
-   * that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
-   */
-  @Override
-  public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
-  }
+    private final CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
 
-  /** This function is called once each time the robot enters Disabled mode. */
-  @Override
-  public void disabledInit() {}
+    private SendableChooser<Command> autoChooser;
 
-  @Override
-  public void disabledPeriodic() {}
 
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
-  @Override
-  public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    @Override
+    public void robotInit() {
 
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+        //autoChooser = AutoBuilder.buildAutoChooser();
+        controls.configureDefaultCommands();
+        controls.configureDriverCommands();
+       // CommandSwerveDrivetrain.getInstance();
+        ScoringSubsystem.getInstance();
+
+        // Limelight.getInstance();
+        
     }
-  }
 
-  /** This function is called periodically during autonomous. */
-  @Override
+    @Override
+    public void robotPeriodic() {
+        CommandScheduler.getInstance().run();
+        SmartDashboard.putData(autoChooser);
+        if (alliance.isEmpty()) {
+            alliance = DriverStation.getAlliance();
+        }
+        // blinkin.setColor(BlinkinColor
+
+        
+        }
+
+    @Override
+    public void disabledPeriodic() {
+        alliance = DriverStation.getAlliance();
+    }
+
+
+    @Override
+    public void teleopInit() {
+
+    }
+
+    @Override
+    public void teleopPeriodic() {
+        
+        
+    if(RobotState.isEnabled()){
+      //LED Code goes here
+        }
+      }
+
+
+    @Override
+    public void teleopExit() {
+        controls.driver.rumble(0);
+    }
+
+    @Override
+    public void disabledInit() {
+        setupTimer.restart();
+        // drivetrain.enableBrakeMode(false);
+    }
+    @Override
+    public void autonomousInit() {
+        // new FullScore().schedule();
+        // drivetrain.enableBrakeMode(true);
+        // matchStarted = true;
+        ScoringSubsystem.getInstance();
+
+        // if (autoToRun == null)
+            // autoToRun = defaultAuto;
+        if (autoChooser.getSelected() != null)
+            autoChooser.getSelected().schedule();
+        //autoToRun = new HighHighCone();
+
+        // if (alliance.get() == Alliance.Blue) {
+        //     CommandSwerveDrivetrain.getInstance().(autoToRun.getInitialPose().getRotation().getDegrees());
+        //     Drivetrain.getInstance().setPose(autoToRun.getInitialPose());
+        // } else {
+        //     Drivetrain.getInstance().setYaw(PoseUtil.flipAngleDegrees(autoToRun.getInitialPose().getRotation().getDegrees()));
+        //     Drivetrain.getInstance().setPose(PoseUtil.flip(autoToRun.getInitialPose()));
+        // }
+        //SmartDashboard.putData((Sendable) autoToRun.getInitialPose());
+
+        // autoToRun.getCommand().schedule();
+        //new LongTaxi().getCommand().schedule();
+
+        // CommandScheduler.getInstance().run();
+
+        // if (alliance.get() == Alliance.Blue) {
+        //     Drivetrain.getInstance().setYaw(autoToRun.getInitialPose().getRotation().getDegrees());
+        //     Drivetrain.getInstance().setPose(autoToRun.getInitialPose());
+        // } else {
+        //     Drivetrain.getInstance().setYaw(PoseUtil.flip(autoToRun.getInitialPose()).getRotation().getDegrees());
+        //     Drivetrain.getInstance().setPose(PoseUtil.flip(autoToRun.getInitialPose()));
+        // }
+        //Sets the LEDs to a pattern for auto, this could be edited to include code for if vision is aligned for auto diagnosis
+    }
+
+    @Override
   public void autonomousPeriodic() {}
 
-  @Override
-  public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+
+    @Override
+    public void testInit() {
+        CommandScheduler.getInstance().cancelAll();
     }
-  }
 
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {}
-
-  @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-  }
-
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {}
-
-  /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {}
-
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {}
-}
+    public static void main(String... args) {
+        RobotBase.startRobot(Robot::new);
+        }
+    }

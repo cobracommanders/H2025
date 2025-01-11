@@ -38,7 +38,6 @@ public class Controls {
     public final Xbox driver = new Xbox(OIConstants.DRIVER_CONTROLLER_ID);
     public final Xbox operator = new Xbox(OIConstants.OPERATOR_CONTROLLER_ID);
     //CommandXboxPS5Controller drv = new CommandXboxPS5Controller(0); // driver xbox controller
-    public static final Command scoreCommand = new Score();
 
     public Controls() {
         driver.setDeadzone(0.15);
@@ -63,8 +62,8 @@ public class Controls {
   }
 
     public void configureDriverCommands() {
-        driver.rightBumper().onTrue(runOnce(() ->CommandSwerveDrivetrain.getInstance().setYaw(RobotContainer.alliance.get() == Alliance.Red?180:0)));
-        driver.rightTrigger().whileTrue(scoreCommand);
-        driver.rightTrigger().onFalse(new ReturnToIdle());
+        driver.rightBumper().onTrue(runOnce(() ->CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get() == Alliance.Red?180:0)));
+        driver.rightTrigger().whileTrue(new Score());
+        driver.rightTrigger().whileFalse(new ReturnToIdle());
     }
 }

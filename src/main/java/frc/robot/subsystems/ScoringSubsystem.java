@@ -32,7 +32,7 @@ public class ScoringSubsystem extends SubsystemBase{
     
     public ScoringSubsystem() {
         // motor = new LazySparkMax(Ports.IntakePorts.LMOTOR, MotorType.kBrushless);
-        motor = new SparkMax(0, MotorType.kBrushless);
+        motor = new SparkMax(43, MotorType.kBrushless);
         
         currentState = State.ScoringSubsystem.IDLE;
         setpoint = currentState.speed;
@@ -40,12 +40,12 @@ public class ScoringSubsystem extends SubsystemBase{
     @Override
     public void periodic() {
         // We will use this variable to keep track of our desired speed
-        double speed = 0;
+        double speed = setpoint;
         if (isActivated) {
             // double rotation = CommandSwerveDrivetrain.getInstance().getState().Speeds.omegaRadiansPerSecond;
             //double driveAccel = Drivetrain.getInstance().getRobotRelativeYAcceleration();
             SmartDashboard.putNumber("Intake Speed", speed);
-            set(-speed);
+            set(speed);
             
         }
         
