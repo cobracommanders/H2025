@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.RobotCommands;
+import frc.robot.commands.RobotManager;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Scoring.ScoringSubsystem;
 
@@ -25,6 +27,9 @@ public class Robot extends TimedRobot{
     public static final double DEFAULT_PERIOD = 0.02;
     public final Timer setupTimer = new Timer();
     public double setupTime  = 0;
+
+    private RobotManager robotManager = new RobotManager(ScoringSubsystem.getInstance());
+    private RobotCommands robotCommands = new RobotCommands(robotManager);
     // public static int coordinateFlip = 1;
     // public static int rotationOffset = 0;
 
@@ -42,6 +47,9 @@ public class Robot extends TimedRobot{
         //autoChooser = AutoBuilder.buildAutoChooser();
         controls.configureDefaultCommands();
         controls.configureDriverCommands();
+
+        NamedCommands.registerCommand("score", robotCommands.scoreCommand());
+        NamedCommands.registerCommand("return to idle", robotCommands.scoreCommand());
        // CommandSwerveDrivetrain.getInstance();
         ScoringSubsystem.getInstance();
 

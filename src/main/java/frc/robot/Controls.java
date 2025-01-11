@@ -66,7 +66,7 @@ public class Controls {
   }
 
     public void configureDriverCommands() {
-        driver.rightBumper().onTrue(runOnce(() ->CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get() == Alliance.Red?180:0)));
+        driver.rightBumper().onTrue(runOnce(() ->CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
         driver.rightTrigger().onTrue(robotCommands.scoreCommand());
         driver.rightTrigger().onFalse(robotCommands.idleCommand());
     }

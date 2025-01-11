@@ -49,7 +49,7 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
             motor.set(0.0);
           }
           case SCORE -> {
-            motor.set(-0.5);
+            motor.set(-0.2);
           }
           default -> {}
         }

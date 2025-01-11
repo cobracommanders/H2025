@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Rotation;
+
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;
@@ -35,9 +37,21 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
-    public void setYaw(double angle) {
-        this.getPigeon2().setYaw(angle);
+    public void setYaw(Rotation2d rotation) {
+        // this.getPigeon2().setYaw(angle);
+        this.resetRotation(rotation);
     }
+
+    public void setYaw(Alliance alliance) { setYaw((alliance == Alliance.Red) ? RedAlliancePerspectiveRotation : BlueAlliancePerspectiveRotation); }
+    // public void setYaw(Alliance alliance) {
+    //     if (alliance == Alliance.Red) {
+    //         setYaw(RedAlliancePerspectiveRotation);
+    //     }
+
+    //     else {
+    //         setYaw(BlueAlliancePerspectiveRotation);
+    //     }
+    // }
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private final Rotation2d BlueAlliancePerspectiveRotation = Rotation2d.fromDegrees(0);
