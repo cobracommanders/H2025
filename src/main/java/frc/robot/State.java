@@ -13,8 +13,8 @@ public enum State {
         this.scoringSubsystem = scoringSubsystem;
     }
     public enum ScoringSubsystem{
-        IDLE(0),
-        SCORE(0);
+        IDLE(0.03),
+        SCORE(1);
 
         public final double speed;
 
