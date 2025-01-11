@@ -41,7 +41,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         // this.getPigeon2().setYaw(angle);
         this.resetRotation(rotation);
     }
-
+    
     public void setYaw(Alliance alliance) { setYaw((alliance == Alliance.Red) ? RedAlliancePerspectiveRotation : BlueAlliancePerspectiveRotation); }
     // public void setYaw(Alliance alliance) {
     //     if (alliance == Alliance.Red) {
