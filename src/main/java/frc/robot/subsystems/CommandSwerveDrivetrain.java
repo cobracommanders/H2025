@@ -9,6 +9,8 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveModuleConstants.ClosedLoopOutputType;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
@@ -83,7 +85,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
     }
         public void driveRobotRelative(ChassisSpeeds speeds) {
-            this.setControl(new SwerveRequest.RobotCentric().withVelocityX(speeds.vxMetersPerSecond).withVelocityY(speeds.vyMetersPerSecond).withRotationalRate(speeds.omegaRadiansPerSecond));        
+            this.setControl(new SwerveRequest.RobotCentric().withVelocityX(speeds.vxMetersPerSecond).withVelocityY(speeds.vyMetersPerSecond).withRotationalRate(speeds.omegaRadiansPerSecond).withDriveRequestType(DriveRequestType.Velocity));        
         }
         public void driveFieldRelative(ChassisSpeeds speeds) {
             this.setControl(new SwerveRequest.FieldCentric().withVelocityX(xLimiter.calculate(speeds.vxMetersPerSecond)).withVelocityY(yLimiter.calculate(speeds.vyMetersPerSecond)).withRotationalRate(speeds.omegaRadiansPerSecond));

@@ -49,7 +49,7 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
             motor.set(0.0);
           }
           case SCORE -> {
-            motor.set(-0.2);
+            motor.set(-0.25);
           }
           default -> {}
         }
@@ -57,29 +57,12 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
 
     @Override
     public void periodic() {
-        
-        // We will use this variable to keep track of our desired speed
-      
-        
-        // set(speed);
-        // if (Shooter.getInstance().getAngle() < ShooterConstants.AngleConstants.MIN_ANGLE - 1) //Tolerance for Intake Angle
-        //     speed = 0;
     }
+
     public void set(double speed) {
         motor.set(speed);
     }
 
-    /**
-     * sets state for speed and sets PID controller to setpoint
-     */
-
-
-    // Getter method to retrieve current State
-
-
-    
-    // Using static instances to reference the flywheel object ensures that we only use ONE FLywheel throughout the code 
-    // This makes it very easy to access the flywheel object
     private static ScoringSubsystem instance;
 
     public static ScoringSubsystem getInstance() {

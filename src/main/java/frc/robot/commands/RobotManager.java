@@ -7,13 +7,7 @@ import frc.robot.subsystems.Scoring.ScoringState;
 import frc.robot.subsystems.Scoring.ScoringSubsystem;
 
 public class RobotManager extends StateMachine<RobotState> {
-  private static final double MINIMUM_SHOT_TIME = 0.5;
   public final ScoringSubsystem scoringSubsystem;
-  private final Timer shotTimer = new Timer();
-  private boolean facingSpeakerAngle = false;
-  private boolean facingFeedSpotAngle = false;
-
-  private boolean confirmShotActive = false;
 
   public RobotManager(
       ScoringSubsystem scoringSubsystem) {
@@ -32,19 +26,6 @@ public class RobotManager extends StateMachine<RobotState> {
             SCORE ->
           currentState;
       };
-        // case INTAKING_BACK -> !queuer.hasNote() ? RobotState.INTAKING_FORWARD_PUSH :
-        // currentState;
-        // case INTAKING_FORWARD_PUSH -> {
-        //   if (!queuer.atGoal()) {
-        //     yield currentState;
-        //   }
-
-        //   if (confirmShotActive) {
-        //     yield RobotState.SPEAKER_PREPARE_TO_SCORE;
-        //   }
-
-        //   yield RobotState.IDLE_WITH_GP;
-        // }
     };
   
 
@@ -60,22 +41,6 @@ public class RobotManager extends StateMachine<RobotState> {
       
       }
     }
-        // case INTAKING_BACK -> {
-        //   arm.setState(ArmState.IDLE);
-        //   shooter.setState(ShooterState.IDLE_STOPPED);
-        //   intake.setState(IntakeState.INTAKING_BACK);
-        //   queuer.setState(QueuerState.INTAKING_BACK);
-        //   swerve.setSnapsEnabled(false);
-        //   swerve.setSnapToAngle(0);
-        // }
-        // case INTAKING_FORWARD_PUSH -> {
-        //   arm.setState(ArmState.IDLE);
-        //   shooter.setState(ShooterState.IDLE_STOPPED);
-        //   intake.setState(IntakeState.INTAKING_FORWARD_PUSH);
-        //   queuer.setState(QueuerState.INTAKING_FORWARD_PUSH);
-        //   swerve.setSnapsEnabled(false);
-        //   swerve.setSnapToAngle(0);
-        // 
 
   @Override
   public void periodic() {
@@ -91,8 +56,7 @@ public class RobotManager extends StateMachine<RobotState> {
   }
 
 
-  public void stopShootingRequest() {
-    // If we are actively taking a shot, ignore the request to avoid messing up shooting
+  public void stopScoringRequest() {
     switch (getState()) {
       case SCORE-> {}
 
