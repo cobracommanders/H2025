@@ -15,12 +15,15 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,6 +31,8 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.subsystems.TunerConstants;
 import frc.robot.subsystems.TunerConstants.TunerSwerveDrivetrain;
+import frc.robot.vision.LimelightHelpers;
+import frc.robot.vision.LimelightLocalization;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements
@@ -37,6 +42,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
+    private Field2d field = new Field2d();
+
+    private LimelightLocalization limelightLocalization = new LimelightLocalization();
+
     public void setYaw(Rotation2d rotation) {
         // this.getPigeon2().setYaw(angle);
         this.resetRotation(rotation);
@@ -64,7 +73,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SlewRateLimiter yLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
 
     public boolean isMoving() {
-        return (Math.abs(this.getState().Speeds.vxMetersPerSecond) >= 0.1 || Math.abs(this.getState().Speeds.vyMetersPerSecond) >= 0.1 || Math.abs(this.getState().Speeds.omegaRadiansPerSecond) >= 0.5);
+        return (Math.abs(this.getState().Speeds.vxMetersPerSecond) >= 1 || Math.abs(this.getState().Speeds.vyMetersPerSecond) >= 1 || Math.abs(this.getState().Speeds.omegaRadiansPerSecond) >= 0.5);
     }
     
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
@@ -145,6 +154,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     @Override
     public void periodic() {
+        limelightLocalization.update();
+        field.setRobotPose(this.getState().Pose);
+        SmartDashboard.putData(field);
         /* Periodically try to apply the operator perspective */
         /* If we haven't applied the operator perspective before, then we should apply it regardless of DS state */
         /* This allows us to correct the perspective in case the robot code restarts mid-match */
