@@ -47,7 +47,7 @@ public class LimelightLocalization{
     }
     if(!rejectLeftData)
     {
-      
+
       CommandSwerveDrivetrain.getInstance().addVisionMeasurement(
           mt2l.pose,
           mt2l.timestampSeconds,
