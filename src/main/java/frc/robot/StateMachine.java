@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import dev.doglog.DogLog;
 
 import java.util.Set;
 
@@ -125,6 +126,7 @@ public abstract class StateMachine<S extends Enum<S>> extends SubsystemBase {
 
   /** Run side effects that occur when a state transition happens. */
   private void doTransition() {
+    DogLog.log(this.getName() + "/State", state);
 
     lastTransitionTimestamp = Timer.getFPGATimestamp();
 
