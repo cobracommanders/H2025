@@ -33,7 +33,8 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
     public ScoringSubsystem() {
         super(ScoringState.IDLE);
         // motor = new LazySparkMax(Ports.IntakePorts.LMOTOR, MotorType.kBrushless);
-        motor = new SparkMax(43, MotorType.kBrushless);
+        leftMotor = new SparkMax(43, MotorType.kBrushless);
+        rightMotor = new SparkMax(44, MotorType.kBrushless)
         
         currentState = ScoringState.IDLE;
     }
@@ -46,10 +47,12 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
       protected void afterTransition(ScoringState newState) {
         switch (newState) {
           case IDLE -> {
-            motor.set(0.0);
+            leftMotor.set(0.0);
+            rightMotor.set(0.0);
           }
           case SCORE -> {
-            motor.set(-0.25);
+            leftMotor.set(-1.0);
+            rightMotor.set(1.0);
           }
           default -> {}
         }
@@ -60,7 +63,8 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
     }
 
     public void set(double speed) {
-        motor.set(speed);
+        leftMotor.set(speed);
+        rightMotor
     }
 
     private static ScoringSubsystem instance;
