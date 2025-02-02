@@ -32,8 +32,8 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
     
     public ScoringSubsystem() {
         super(ScoringState.IDLE);
-        // motor = new LazySparkMax(Ports.IntakePorts.LMOTOR, MotorType.kBrushless);
-        motor = new SparkMax(42, MotorType.kBrushless);
+        motor = new SparkMax(43, MotorType.kBrushless);
+        //(Added second Spark max for algae scorer)
         
         currentState = ScoringState.IDLE;
     }
@@ -50,6 +50,7 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
           }
           case SCORE -> {
             motor.set(-0.2);
+
           }
           default -> {}
         }

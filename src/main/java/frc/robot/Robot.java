@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.RobotCommands;
 import frc.robot.commands.RobotManager;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.LED.LED;
 import frc.robot.subsystems.Scoring.ScoringSubsystem;
 
 import java.util.List;
@@ -63,10 +64,7 @@ public class Robot extends TimedRobot{
         SmartDashboard.putData(autoChooser);
         if (alliance.isEmpty()) {
             alliance = DriverStation.getAlliance();
-        }
-        // blinkin.setColor(BlinkinColor
-
-        
+        }    
         }
 
     @Override
