@@ -6,7 +6,8 @@ import frc.robot.subsystems.LED.Patterns;
 
 public enum RobotState {
   IDLE(new LEDState(Color.kYellow, Patterns.SOLID)),
-  SCORE(new LEDState(Color.kPurple, Patterns.SOLID));
+  CLIMB(new LEDState(Color.kPurple, Patterns.SOLID)),
+  UNCLIMB(new LEDState(Color.kPurple, Patterns.FAST_BLINK));
 
   public final LEDState ledState;
 

@@ -47,7 +47,7 @@ public class Robot extends TimedRobot{
         controls.configureDefaultCommands();
         controls.configureDriverCommands();
 
-        NamedCommands.registerCommand("score", robotCommands.scoreCommand());
+        NamedCommands.registerCommand("score", robotCommands.climbCommand());
         NamedCommands.registerCommand("return to idle", robotCommands.idleCommand());
         CommandSwerveDrivetrain.getInstance();
         ScoringSubsystem.getInstance();

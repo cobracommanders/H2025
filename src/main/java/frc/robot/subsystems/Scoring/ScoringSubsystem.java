@@ -21,7 +21,8 @@ import frc.robot.StateMachine;
 
 public class ScoringSubsystem extends StateMachine<ScoringState>{
     
-    private final SparkMax motor;
+    private final TalonFX lMotor;
+    private final TalonFX rMotor;
     
     private ScoringState currentState;
     private double setpoint;
@@ -32,7 +33,8 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
     
     public ScoringSubsystem() {
         super(ScoringState.IDLE);
-        motor = new SparkMax(43, MotorType.kBrushless);
+        lMotor = new TalonFX(42);
+        rMotor = new TalonFX(43);
         //(Added second Spark max for algae scorer)
         
         currentState = ScoringState.IDLE;
@@ -46,10 +48,16 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
       protected void afterTransition(ScoringState newState) {
         switch (newState) {
           case IDLE -> {
-            motor.set(0.0);
+            lMotor.set(0.0);
+            rMotor.set(0.0);
           }
-          case SCORE -> {
-            motor.set(-0.2);
+          case CLIMB -> {
+            lMotor.set(-0.2);
+            rMotor.set(0.2);
+          }
+          case UNCLIMB  -> {
+            lMotor.set(0.2);
+            rMotor.set(-0.2);
 
           }
           default -> {}
@@ -57,7 +65,8 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
       }
 
     public void set(double speed) {
-        motor.set(speed);
+        lMotor.set(speed);
+        rMotor.set(speed);
     }
 
     private static ScoringSubsystem instance;

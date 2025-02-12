@@ -23,7 +23,8 @@ public class RobotManager extends StateMachine<RobotState> {
   protected RobotState getNextState(RobotState currentState) {
     return switch (currentState) {
       case IDLE,
-            SCORE ->
+            CLIMB,
+            UNCLIMB ->
           currentState;
       };
     };
@@ -35,8 +36,11 @@ public class RobotManager extends StateMachine<RobotState> {
       case IDLE -> {
         scoringSubsystem.setState(ScoringState.IDLE);
       }
-      case SCORE -> {
-        scoringSubsystem.setState(ScoringState.SCORE);
+      case CLIMB -> {
+        scoringSubsystem.setState(ScoringState.CLIMB);
+      }
+      case UNCLIMB -> {
+        scoringSubsystem.setState(ScoringState.UNCLIMB);
       }
       
       }
@@ -51,14 +55,18 @@ public class RobotManager extends StateMachine<RobotState> {
     setStateFromRequest(RobotState.IDLE);
   }
 
-  public void scoreRequest() {
-    setStateFromRequest(RobotState.SCORE);
+  public void climbRequest() {
+    setStateFromRequest(RobotState.CLIMB);
   }
 
+  public void unclimbRequest() {
+    setStateFromRequest(RobotState.UNCLIMB);
+  }
 
   public void stopScoringRequest() {
     switch (getState()) {
-      case SCORE-> {}
+      case CLIMB-> {}
+      case UNCLIMB -> {}
 
       default -> setStateFromRequest(RobotState.IDLE);
     }
