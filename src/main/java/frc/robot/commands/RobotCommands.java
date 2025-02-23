@@ -15,14 +15,18 @@ public class RobotCommands {
     requirements = requirementsList.toArray(Subsystem[]::new);
   }
 
-  public Command climbCommand() {
-    return Commands.runOnce(robot::climbRequest, requirements)
-        .andThen(robot.waitForState(RobotState.CLIMB));
+  public Command scoreCommand() {
+    return Commands.runOnce(robot::scoreRequest, requirements)
+        .andThen(robot.waitForState(RobotState.SCORE));
   }
-  public Command unclimbCommand() {
-    return Commands.runOnce(robot::unclimbRequest, requirements)
-        .andThen(robot.waitForState(RobotState.UNCLIMB));
-  }
+  // public Command climbCommand() {
+  //   return Commands.runOnce(robot::climbRequest, requirements)
+  //       .andThen(robot.waitForState(RobotState.CLIMB));
+  // }
+  // public Command unclimbCommand() {
+  //   return Commands.runOnce(robot::unclimbRequest, requirements)
+  //       .andThen(robot.waitForState(RobotState.UNCLIMB));
+  // }
 
   public Command idleCommand() {
     return Commands.runOnce(robot::idleRequest, requirements)

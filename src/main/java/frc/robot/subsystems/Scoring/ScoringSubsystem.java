@@ -21,8 +21,9 @@ import frc.robot.StateMachine;
 
 public class ScoringSubsystem extends StateMachine<ScoringState>{
     
-    private final TalonFX lMotor;
-    private final TalonFX rMotor;
+    // private final TalonFX lMotor;
+    // private final TalonFX rMotor;
+    private final SparkMax scoringMotor;
     
     private ScoringState currentState;
     private double setpoint;
@@ -33,8 +34,9 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
     
     public ScoringSubsystem() {
         super(ScoringState.IDLE);
-        lMotor = new TalonFX(42);
-        rMotor = new TalonFX(43);
+        // lMotor = new TalonFX(42);
+        // rMotor = new TalonFX(43);
+        scoringMotor = new SparkMax(42, MotorType.kBrushless);
         //(Added second Spark max for algae scorer)
         
         currentState = ScoringState.IDLE;
@@ -47,26 +49,32 @@ public class ScoringSubsystem extends StateMachine<ScoringState>{
       @Override
       protected void afterTransition(ScoringState newState) {
         switch (newState) {
+          // case IDLE -> {
+          //   lMotor.set(0.0);
+          //   rMotor.set(0.0);
+          // }
           case IDLE -> {
-            lMotor.set(0.0);
-            rMotor.set(0.0);
+            scoringMotor.set(0.0);
           }
-          case CLIMB -> {
-            lMotor.set(-0.2);
-            rMotor.set(0.2);
+          // case CLIMB -> {
+          //   lMotor.set(-0.2);
+          //   rMotor.set(0.2);
+          // }
+          // case UNCLIMB  -> {
+          //   lMotor.set(0.2);
+          //   rMotor.set(-0.2);
+          case SCORE -> {
+            scoringMotor.set(-0.3);
           }
-          case UNCLIMB  -> {
-            lMotor.set(0.2);
-            rMotor.set(-0.2);
-
-          }
+          // }
           default -> {}
         }
       }
 
     public void set(double speed) {
-        lMotor.set(speed);
-        rMotor.set(speed);
+        // lMotor.set(speed);
+        // rMotor.set(speed);
+        scoringMotor.set(speed);
     }
 
     private static ScoringSubsystem instance;

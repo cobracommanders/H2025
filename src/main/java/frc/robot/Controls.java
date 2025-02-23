@@ -62,9 +62,12 @@ public class Controls {
 
     public void configureDriverCommands() {
         driver.rightBumper().onTrue(runOnce(() ->CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
-        driver.rightTrigger().onTrue(Robot.robotCommands.climbCommand());
+        //driver.rightTrigger().onTrue(Robot.robotCommands.climbCommand());
+        //driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
+        //driver.leftTrigger().onTrue(Robot.robotCommands.unclimbCommand());
+        //driver.leftTrigger().onFalse(Robot.robotCommands.idleCommand());
+        driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
         driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
-        driver.leftTrigger().onTrue(Robot.robotCommands.unclimbCommand());
-        driver.leftTrigger().onFalse(Robot.robotCommands.idleCommand());
+        driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
     }
 }
