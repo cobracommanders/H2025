@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.RobotCommands;
-import frc.robot.commands.RobotManager;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.stateMachine.RobotManager;
 import frc.robot.subsystems.LED.LED;
-import frc.robot.subsystems.Scoring.ScoringSubsystem;
+import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.intakeRollers.IntakeRollersSubsystem;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class Robot extends TimedRobot{
     public final Timer setupTimer = new Timer();
     public double setupTime  = 0;
 
-    public static RobotManager robotManager = new RobotManager(ScoringSubsystem.getInstance());
+    public static RobotManager robotManager = new RobotManager();
     public static RobotCommands robotCommands = new RobotCommands(robotManager);
     // public static int coordinateFlip = 1;
     // public static int rotationOffset = 0;
@@ -50,7 +50,7 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("score", robotCommands.scoreCommand());
         NamedCommands.registerCommand("return to idle", robotCommands.idleCommand());
         CommandSwerveDrivetrain.getInstance();
-        ScoringSubsystem.getInstance();
+        IntakeRollersSubsystem.getInstance();
 
         autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -103,7 +103,7 @@ public class Robot extends TimedRobot{
         // new FullScore().schedule();
         // drivetrain.enableBrakeMode(true);
         // matchStarted = true;
-        ScoringSubsystem.getInstance();
+        IntakeRollersSubsystem.getInstance();
 
         // if (autoToRun == null)
             // autoToRun = defaultAuto;

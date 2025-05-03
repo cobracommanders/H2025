@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.stateMachine;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;

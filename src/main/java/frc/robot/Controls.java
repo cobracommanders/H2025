@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.RobotCommands;
-import frc.robot.commands.RobotManager;
 import frc.robot.drivers.Xbox;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.TunerConstants;
-import frc.robot.subsystems.Scoring.ScoringSubsystem;
+import frc.robot.stateMachine.RobotManager;
+import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.drivetrain.TunerConstants;
+import frc.robot.subsystems.intakeRollers.IntakeRollersSubsystem;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
@@ -62,12 +62,14 @@ public class Controls {
 
     public void configureDriverCommands() {
         driver.rightBumper().onTrue(runOnce(() ->CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
-        //driver.rightTrigger().onTrue(Robot.robotCommands.climbCommand());
-        //driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
-        //driver.leftTrigger().onTrue(Robot.robotCommands.unclimbCommand());
-        //driver.leftTrigger().onFalse(Robot.robotCommands.idleCommand());
         driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
         driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
+        driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
         driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
+    }
+
+    public void configureOperatorCommands(){
+        operator.A().onTrue(Robot.robotCommands.L1Command());
+        operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
     }
 }
