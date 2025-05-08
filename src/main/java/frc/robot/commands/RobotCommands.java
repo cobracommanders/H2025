@@ -32,7 +32,7 @@ public class RobotCommands {
   }
 
   public Command intakeIdleCommand(){
-    return new ConditionalCommand(idleCommand(), none(), robot.getState() == RobotState.INTAKE);
+    return new ConditionalCommand(idleCommand(), none(), ()->robot.getState() == RobotState.INTAKE);
   }
 
   public Command intakeCommand(){

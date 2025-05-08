@@ -65,7 +65,7 @@ public class Controls {
         driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
         driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
         driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
-        driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
+        driver.leftTrigger().onFalse(Robot.robotCommands.intakeIdleCommand());
     }
 
     public void configureOperatorCommands(){
