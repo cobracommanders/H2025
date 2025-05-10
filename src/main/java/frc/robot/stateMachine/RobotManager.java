@@ -6,6 +6,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.stateMachine.FlagManager;
+import frc.robot.subsystems.climber.ClimberState;
+import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollersState;
 import frc.robot.subsystems.intakeRollers.IntakeRollersSubsystem;
 import frc.robot.subsystems.intakeWrist.IntakeWristState;
@@ -14,11 +16,13 @@ import frc.robot.subsystems.intakeWrist.IntakeWristSubsystem;
 public class RobotManager extends StateMachine<RobotState> {
   public final IntakeRollersSubsystem intakeRollers;
   public final IntakeWristSubsystem intakeWrist;
+  public final ClimberSubsystem climber;
 
   public final FlagManager<RobotFlag> flags = new FlagManager<>("RobotManager", RobotFlag.class);
 
   public RobotManager() {
       super(RobotState.IDLE);
+      this.climber = ClimberSubsystem.getInstance();
       this.intakeRollers = IntakeRollersSubsystem.getInstance();
       this.intakeWrist = IntakeWristSubsystem.getInstance();
     
@@ -34,6 +38,21 @@ public class RobotManager extends StateMachine<RobotState> {
     RobotState nextState = currentState;
     for (RobotFlag flag : flags.getChecked()) {
       switch (flag) {
+        case DEPLOY_CLIMB:
+            currentState = RobotState.PREPARE_CLIMB;
+            break;
+        case CLIMB:
+            currentState = RobotState.CLIMB;
+            break;
+        case UNCLIMB:
+            currentState = RobotState.UNCLIMB;
+            break;
+        case CLIMB_WAIT:
+            currentState = RobotState.CLIMB_WAIT;
+            break;
+        case SCORE:
+            currentState = RobotState.SCORE_L1;
+          break;
         case INTAKE:
             currentState = RobotState.PREPARE_INTAKE;
           break;
@@ -43,30 +62,34 @@ public class RobotManager extends StateMachine<RobotState> {
         case L1:
             currentState = RobotState.PREPARE_L1;
           break;
-        case SCORE:
-            currentState = RobotState.SCORE_L1;
-          break;
-        default:
-          break;
       }
     }
 
   switch (currentState) {
     case WAIT_L1:
+    break;
     case IDLE:
     break;
 
+    case PREPARE_CLIMB:
+      if(timeout(0.25)){
+        nextState = RobotState.CLIMB_WAIT;
+      }
+      break;
     case PREPARE_L1:
-      if(intakeWrist.atGoal())
+      if(intakeWrist.atGoal()){
         nextState = RobotState.WAIT_L1;
+      }
       break;
     case PREPARE_IDLE:
-      if(intakeWrist.atGoal())
+      if(intakeWrist.atGoal()){
         nextState = RobotState.IDLE;
+      }
       break;
     case PREPARE_INTAKE:
-      if(intakeWrist.atGoal())
+      if(intakeWrist.atGoal()){
         nextState = RobotState.INTAKE;
+      }
       break;
     case SCORE_L1:
       if (timeout(2)){
@@ -115,6 +138,27 @@ public class RobotManager extends StateMachine<RobotState> {
         intakeRollers.setState(IntakeRollersState.SCORE_L1);
         intakeWrist.setState(IntakeWristState.L1);
       }
+      case CLIMB -> {
+        intakeRollers.setState(IntakeRollersState.IDLE);
+        intakeWrist.setState(IntakeWristState.IDLE);
+        climber.setState(ClimberState.CLIMB);
+      }
+      case UNCLIMB -> {
+        intakeRollers.setState(IntakeRollersState.IDLE);
+        intakeWrist.setState(IntakeWristState.IDLE);
+        climber.setState(ClimberState.UNCLIMB);
+      }
+      case CLIMB_WAIT -> {
+        intakeRollers.setState(IntakeRollersState.IDLE);
+        intakeWrist.setState(IntakeWristState.IDLE);
+        climber.setState(ClimberState.IDLE);
+      }
+      case PREPARE_CLIMB -> {
+        intakeRollers.setState(IntakeRollersState.IDLE);
+        intakeWrist.setState(IntakeWristState.IDLE);
+        climber.setState(ClimberState.UNCLIMB);
+      }
+
       
       }
     }
@@ -138,6 +182,22 @@ public class RobotManager extends StateMachine<RobotState> {
 
   public void scoreRequest(){
     flags.check(RobotFlag.SCORE);
+  }
+
+  public void deployClimbRequest(){
+    flags.check(RobotFlag.DEPLOY_CLIMB);
+  }
+
+  public void climbRequest(){
+    flags.check(RobotFlag.CLIMB);
+  }
+
+  public void unClimbRequest(){
+    flags.check(RobotFlag.UNCLIMB);
+  }
+
+  public void climbWaitRequest(){
+    flags.check(RobotFlag.CLIMB_WAIT);
   }
 
   public void stopScoringRequest() {

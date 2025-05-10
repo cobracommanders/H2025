@@ -66,10 +66,15 @@ public class Controls {
         driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
         driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
         driver.leftTrigger().onFalse(Robot.robotCommands.intakeIdleCommand());
+        driver.POV0().onTrue(Robot.robotCommands.Climb());
+        driver.POV0().onFalse(Robot.robotCommands.climbWait());
+        driver.POV180().onTrue(Robot.robotCommands.unClimb());
+        driver.POV180().onFalse(Robot.robotCommands.climbWait());
     }
 
     public void configureOperatorCommands(){
         operator.A().onTrue(Robot.robotCommands.L1Command());
         operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
+        operator.leftTrigger().and(operator.rightTrigger()).onTrue((Robot.robotCommands.deployClimb()));
     }
 }

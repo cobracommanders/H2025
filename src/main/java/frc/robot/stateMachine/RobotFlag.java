@@ -4,6 +4,10 @@ public enum RobotFlag {
     INTAKE,
     IDLE,
     L1,
-    SCORE
+    SCORE,
+    DEPLOY_CLIMB,
+    CLIMB,
+    UNCLIMB,
+    CLIMB_WAIT
     
 }

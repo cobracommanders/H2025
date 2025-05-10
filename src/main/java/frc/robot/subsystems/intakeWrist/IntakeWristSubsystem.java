@@ -3,8 +3,8 @@ package frc.robot.subsystems.intakeWrist;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -18,23 +18,27 @@ import frc.robot.subsystems.intakeRollers.IntakeRollersState;
 
 public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     
-  private final TalonFX motor;
+  private final TalonFX lMotor;
+  private final TalonFX rMotor;
   private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(intakeWristConstants.P).withKI(intakeWristConstants.I).withKD(intakeWristConstants.D).withKG(intakeWristConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((3.0/1.0)));
   private double intakePosition;
   private final double tolerance;
   private boolean brakeModeEnabled;
   private double motorCurrent;
+  private Follower right_motor_request = new Follower(Ports.IntakeWristPorts.lMotor, true);
 
-  private MotionMagicVoltage motor_request = new MotionMagicVoltage(0).withSlot(0);
+  private MotionMagicVoltage left_motor_request = new MotionMagicVoltage(0).withSlot(0);
   
   public IntakeWristSubsystem() {
     super(IntakeWristState.IDLE);
     motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    motor = new TalonFX(Ports.IntakeWristPorts.motor);
-    motor.getConfigurator().apply(motor_config);
+    lMotor = new TalonFX(Ports.IntakeWristPorts.lMotor);
+    rMotor = new TalonFX(Ports.IntakeWristPorts.rMotor);
     motor_config.MotionMagic.MotionMagicCruiseVelocity = intakeWristConstants.MotionMagicCruiseVelocity;
     motor_config.MotionMagic.MotionMagicAcceleration = intakeWristConstants.MotionMagicAcceleration;
     motor_config.MotionMagic.MotionMagicJerk = intakeWristConstants.MotionMagicJerk;
+    lMotor.getConfigurator().apply(motor_config);
+    rMotor.getConfigurator().apply(motor_config);
     tolerance = 0.04;
     brakeModeEnabled = false;
   }
@@ -64,8 +68,8 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
 
   @Override
   public void collectInputs() {
-    intakePosition = motor.getPosition().getValueAsDouble();
-    motorCurrent = motor.getStatorCurrent().getValueAsDouble();
+    intakePosition = lMotor.getPosition().getValueAsDouble();
+    motorCurrent = lMotor.getStatorCurrent().getValueAsDouble();
     DogLog.log(getName() + "/Intake Position", intakePosition);
     DogLog.log(getName() + "/Intake wrist motor current", motorCurrent);
     DogLog.log(getName() + "/Intake wrist AtGoal", atGoal());
@@ -77,18 +81,21 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
 
     if (DriverStation.isDisabled() && brakeModeEnabled == true) {
       motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-      motor.getConfigurator().apply(motor_config);
+      lMotor.getConfigurator().apply(motor_config);
+      rMotor.getConfigurator().apply(motor_config);
       brakeModeEnabled = false;
       }
     else if (DriverStation.isEnabled() && brakeModeEnabled == false)  {
       motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-      motor.getConfigurator().apply(motor_config);
+      lMotor.getConfigurator().apply(motor_config);
+      rMotor.getConfigurator().apply(motor_config);
       brakeModeEnabled = true;
     }
     }
 
   public void setIntakePosition(double position) {
-    motor.setControl(motor_request.withPosition(position));
+    rMotor.setControl(right_motor_request);
+    lMotor.setControl(left_motor_request.withPosition(position));
     DogLog.log(getName() + "/Elbow Setpoint", position);
   }
 

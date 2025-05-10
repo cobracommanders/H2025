@@ -1,5 +1,4 @@
 package frc.robot.commands;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -17,13 +16,13 @@ public class RobotCommands {
 
   public RobotCommands(RobotManager robot) {
     this.robot = robot;
-    var requirementsList = List.of(robot.intakeRollers, robot.intakeWrist);
+    var requirementsList = List.of(robot.intakeRollers, robot.intakeWrist, robot.climber);
     requirements = requirementsList.toArray(Subsystem[]::new);
   }
 
   public Command scoreCommand() {
-    return Commands.runOnce(robot::scoreRequest, requirements)
-        .andThen(robot.waitForState(RobotState.PREPARE_IDLE));
+    return Commands.runOnce(robot::scoreRequest, requirements);
+        //.andThen(robot.waitForState(RobotState.SCORE_L1));
   }
 
   public Command idleCommand() {
@@ -43,5 +42,22 @@ public class RobotCommands {
   public Command L1Command(){
     return Commands.runOnce(robot::prepareL1Request, requirements)
     .andThen(robot.waitForState(RobotState.WAIT_L1));
+  }
+
+  public Command deployClimb(){
+    return Commands.runOnce(robot::deployClimbRequest, requirements)
+    .andThen(robot.waitForState(RobotState.CLIMB_WAIT));
+  }
+
+  public Command Climb(){
+    return Commands.runOnce(robot::climbRequest, requirements);
+  }
+
+  public Command unClimb(){
+    return Commands.runOnce(robot::unClimbRequest, requirements);
+  }
+
+  public Command climbWait(){
+    return Commands.runOnce(robot::climbWaitRequest, requirements);
   }
 }

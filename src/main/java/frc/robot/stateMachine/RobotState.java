@@ -7,6 +7,11 @@ public enum RobotState {
   WAIT_L1,
   SCORE_L1,
   PREPARE_INTAKE,
-  INTAKE;
+  INTAKE,
+  PREPARE_CLIMB,
+  CLIMB_WAIT,
+  CLIMB,
+  UNCLIMB,
+
 
 }

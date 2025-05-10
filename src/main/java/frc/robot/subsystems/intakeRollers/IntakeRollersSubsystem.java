@@ -1,23 +1,7 @@
 package frc.robot.subsystems.intakeRollers;
-import javax.sound.sampled.Port;
-
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
 import dev.doglog.DogLog;
-import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DutyCycle;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Ports;
 import frc.robot.Constants.intakeRollersConstants;
 import frc.robot.stateMachine.StateMachine;
 
@@ -25,7 +9,8 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
     
     // private final TalonFX lMotor;
     // private final TalonFX rMotor;
-    private final TalonFX intakeRollerMotor;
+    private final TalonFX lMotor;
+    private final TalonFX rMotor;
     
     private IntakeRollersState currentState;
     private double setpoint;
@@ -37,14 +22,15 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
     
     public IntakeRollersSubsystem() {
         super(IntakeRollersState.IDLE);
-        intakeRollerMotor = new TalonFX(0);        
+        rMotor = new TalonFX(Ports.IntakeRollersPorts.rMotor);
+        lMotor = new TalonFX(Ports.IntakeRollersPorts.lMotor);        
         currentState = IntakeRollersState.IDLE;
     }
 
     @Override
     protected void collectInputs() {
-      motorStatorCurrent = intakeRollerMotor.getStatorCurrent().getValueAsDouble();
-      DogLog.log(getName() + "/Motor Stator Current", motorStatorCurrent);
+      motorStatorCurrent = lMotor.getStatorCurrent().getValueAsDouble();
+      DogLog.log(getName() + "/Left Motor Stator Current", motorStatorCurrent);
     }
 
     public void setState(IntakeRollersState newState) {
@@ -61,7 +47,8 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
 
     public void setIntakeRollerSpeeds(double IntakeRollersSpeeds){
       DogLog.log(getName() + "/Intake Roller speed", IntakeRollersSpeeds);
-      intakeRollerMotor.set(IntakeRollersSpeeds);
+      lMotor.set(IntakeRollersSpeeds);
+      rMotor.set(-IntakeRollersSpeeds);
     }
 
       @Override
