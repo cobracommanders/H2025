@@ -34,9 +34,9 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     lMotor = new TalonFX(Ports.IntakeWristPorts.lMotor);
     rMotor = new TalonFX(Ports.IntakeWristPorts.rMotor);
-    motor_config.MotionMagic.MotionMagicCruiseVelocity = intakeWristConstants.MotionMagicCruiseVelocity;
-    motor_config.MotionMagic.MotionMagicAcceleration = intakeWristConstants.MotionMagicAcceleration;
-    motor_config.MotionMagic.MotionMagicJerk = intakeWristConstants.MotionMagicJerk;
+    // motor_config.MotionMagic.MotionMagicCruiseVelocity = intakeWristConstants.MotionMagicCruiseVelocity;
+    // motor_config.MotionMagic.MotionMagicAcceleration = intakeWristConstants.MotionMagicAcceleration;
+    // motor_config.MotionMagic.MotionMagicJerk = intakeWristConstants.MotionMagicJerk;
     lMotor.getConfigurator().apply(motor_config);
     rMotor.getConfigurator().apply(motor_config);
     tolerance = 0.04;
@@ -45,21 +45,27 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
 
   public void setState(IntakeWristState newState) {
     setStateFromRequest(newState);
-}
+  }
   
   protected IntakeRollersState getNextState(IntakeRollersState currentState) {
-      return currentState;
-    }
+    return currentState;
+  }
 
    public boolean atGoal() {
     return switch (getState()) {
       case IDLE -> 
         MathUtil.isNear(IntakeWristPositions.IDLE, intakePosition, tolerance);
+      case CAGE_IDLE -> 
+        MathUtil.isNear(IntakeWristPositions.CAGE_IDLE, intakePosition, tolerance);
       case INTAKE -> 
         MathUtil.isNear(IntakeWristPositions.INTAKE, intakePosition, tolerance);
-      case L1 ->
-        MathUtil.isNear(IntakeWristPositions.L1, intakePosition, tolerance);
-     };
+      case CORAL_STATION_INTAKE -> 
+        MathUtil.isNear(IntakeWristPositions.CORAL_STATION_INTAKE, intakePosition, tolerance);
+      case L1_ROW_1 ->
+        MathUtil.isNear(IntakeWristPositions.L1_ROW_1, intakePosition, tolerance);
+      case L1_ROW_2 ->
+        MathUtil.isNear(IntakeWristPositions.L1_ROW_2, intakePosition, tolerance);
+      };
   }
 
   public boolean isIdle() {
@@ -105,11 +111,20 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
         case IDLE -> {
           setIntakePosition(IntakeWristPositions.IDLE);
         }
+        case CAGE_IDLE -> {
+          setIntakePosition(IntakeWristPositions.CAGE_IDLE);
+        }
         case INTAKE-> {
           setIntakePosition(IntakeWristPositions.INTAKE);
         }
-        case L1 -> {
-          setIntakePosition(IntakeWristPositions.L1);
+        case CORAL_STATION_INTAKE-> {
+          setIntakePosition(IntakeWristPositions.CORAL_STATION_INTAKE);
+        }
+        case L1_ROW_1 -> {
+          setIntakePosition(IntakeWristPositions.L1_ROW_1);
+        }
+        case L1_ROW_2 -> {
+          setIntakePosition(IntakeWristPositions.L1_ROW_2);
         }
       }
     }

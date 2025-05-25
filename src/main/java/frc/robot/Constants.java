@@ -17,13 +17,13 @@ public final class Constants {
 }
 
   public static final class intakeWristConstants{
-    public static final double P = 0;
+    public static final double P = 0.1;
     public static final double I = 0;
     public static final double D = 0;
     public static final double G = 0;
-    public static final double MotionMagicAcceleration = 56; //40
-    public static final double MotionMagicCruiseVelocity = 50;
-    public static final double MotionMagicJerk = 420; //300
+    // public static final double MotionMagicAcceleration = 0.2;
+    // public static final double MotionMagicCruiseVelocity = 50;
+    // public static final double MotionMagicJerk = 100;
   }
 
   public static final class intakeRollersConstants{

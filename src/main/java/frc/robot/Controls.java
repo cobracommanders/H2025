@@ -1,21 +1,13 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.RobotCommands;
-import frc.robot.drivers.Xbox;
 import frc.robot.stateMachine.RobotManager;
+import frc.robot.drivers.Xbox;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
-import frc.robot.subsystems.intakeRollers.IntakeRollersSubsystem;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
@@ -30,6 +22,8 @@ public class Controls {
     private final double MaxAngularRate = Math.PI * 3.5; // .75 rotation per second max angular velocity.  Adjust for max turning rate speed.
     private final double TurtleAngularRate = Math.PI * 0.5; // .75 rotation per second max angular velocity.  Adjust for max turning rate speed.
     private double AngularRate = MaxAngularRate; // This will be updated when turtle and reset to MaxAngularRate
+
+    CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
 
      SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
@@ -61,19 +55,24 @@ public class Controls {
   }
 
     public void configureDriverCommands() {
-        driver.rightBumper().onTrue(runOnce(() ->CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
+        driver.rightBumper().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
         driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
         driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
+        driver.leftBumper().onTrue(Robot.robotCommands.coralStationIntakeCommand());
+        driver.leftBumper().onFalse(Robot.robotCommands.intakeIdleCommand());
         driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
         driver.leftTrigger().onFalse(Robot.robotCommands.intakeIdleCommand());
-        driver.POV0().onTrue(Robot.robotCommands.Climb());
-        driver.POV0().onFalse(Robot.robotCommands.climbWait());
-        driver.POV180().onTrue(Robot.robotCommands.unClimb());
-        driver.POV180().onFalse(Robot.robotCommands.climbWait());
+        driver.Y().onTrue(Robot.robotCommands.climb());
+        driver.Y().onFalse(Robot.robotCommands.climbWait());
+        driver.B().onTrue(Robot.robotCommands.unClimb());
+        driver.B().onFalse(Robot.robotCommands.climbWait());
+        driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
+        driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-driver.leftY(), -driver.leftX()))));
     }
 
     public void configureOperatorCommands(){
-        operator.A().onTrue(Robot.robotCommands.L1Command());
+        operator.A().onTrue(Robot.robotCommands.L1Row1Command());
+        operator.A().onTrue(Robot.robotCommands.L1Row2Command());
         operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
         operator.leftTrigger().and(operator.rightTrigger()).onTrue((Robot.robotCommands.deployClimb()));
     }

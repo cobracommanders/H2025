@@ -1,5 +1,6 @@
 package frc.robot.subsystems.intakeRollers;
 import com.ctre.phoenix6.hardware.TalonFX;
+
 import dev.doglog.DogLog;
 import frc.robot.Ports;
 import frc.robot.Constants.intakeRollersConstants;
@@ -9,9 +10,8 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
     
     // private final TalonFX lMotor;
     // private final TalonFX rMotor;
-    private final TalonFX lMotor;
-    private final TalonFX rMotor;
-    
+    private final TalonFX intakeRollerMotor;
+  
     private IntakeRollersState currentState;
     private double setpoint;
     private double GEAR_RATIO = 3/1;
@@ -22,15 +22,14 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
     
     public IntakeRollersSubsystem() {
         super(IntakeRollersState.IDLE);
-        rMotor = new TalonFX(Ports.IntakeRollersPorts.rMotor);
-        lMotor = new TalonFX(Ports.IntakeRollersPorts.lMotor);        
+        intakeRollerMotor = new TalonFX(Ports.IntakeRollersPorts.rollerMotor);
         currentState = IntakeRollersState.IDLE;
     }
 
     @Override
     protected void collectInputs() {
-      motorStatorCurrent = lMotor.getStatorCurrent().getValueAsDouble();
-      DogLog.log(getName() + "/Left Motor Stator Current", motorStatorCurrent);
+      motorStatorCurrent = intakeRollerMotor.getStatorCurrent().getValueAsDouble();
+      DogLog.log(getName() + "/Motor Stator Current", motorStatorCurrent);
     }
 
     public void setState(IntakeRollersState newState) {
@@ -47,8 +46,7 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
 
     public void setIntakeRollerSpeeds(double IntakeRollersSpeeds){
       DogLog.log(getName() + "/Intake Roller speed", IntakeRollersSpeeds);
-      lMotor.set(IntakeRollersSpeeds);
-      rMotor.set(-IntakeRollersSpeeds);
+      intakeRollerMotor.set(IntakeRollersSpeeds);
     }
 
       @Override
@@ -57,11 +55,17 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
           case IDLE -> {
             setIntakeRollerSpeeds(IntakeRollersSpeeds.IDLE);
           }
-          case SCORE_L1 -> {
-            setIntakeRollerSpeeds(IntakeRollersSpeeds.L1);
+          case SCORE_L1_ROW_1 -> {
+            setIntakeRollerSpeeds(IntakeRollersSpeeds.L1_ROW_1);
+          }
+          case SCORE_L1_ROW_2 -> {
+            setIntakeRollerSpeeds(IntakeRollersSpeeds.L1_ROW_2);
           }
           case INTAKE -> {
             setIntakeRollerSpeeds(IntakeRollersSpeeds.INTAKE);
+          }
+          case CORAL_STATION_INTAKE -> {
+            setIntakeRollerSpeeds(IntakeRollersSpeeds.CORAL_STATION_INTAKE);
           }
           default -> {}
         }

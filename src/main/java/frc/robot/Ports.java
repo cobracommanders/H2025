@@ -7,8 +7,7 @@ public class Ports {
     }
 
     public static class IntakeRollersPorts{
-        public static final int lMotor = 2;
-        public static final int rMotor = 3;
+        public static final int rollerMotor = 2;
     }
     public static class ClimberPorts{
         public static final int LEFT_CLIMBER_MOTOR = 4;

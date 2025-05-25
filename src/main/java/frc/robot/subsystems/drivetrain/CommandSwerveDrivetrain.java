@@ -9,6 +9,7 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.SwerveRequest.ForwardPerspectiveValue;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.ClosedLoopOutputType;
 import com.fasterxml.jackson.databind.node.NullNode;
@@ -41,6 +42,8 @@ import frc.robot.vision.LimelightLocalization;
  */
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
+    private double MaxSpeed = TunerConstants.kSpeedAt12Volts;
+    private final double MaxAngularRate = Math.PI * 3.5;
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
     private Field2d field = new Field2d();
@@ -70,8 +73,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     /* Keep track if we've ever applied the operator perspective before or not */
     private boolean hasAppliedOperatorPerspective = false;
 
-     private final SlewRateLimiter xLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
+    private final SlewRateLimiter xLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
     private final SlewRateLimiter yLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
+
+    public SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    public SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     public boolean isMoving() {
         return (Math.abs(this.getState().Speeds.vxMetersPerSecond) >= 1 || Math.abs(this.getState().Speeds.vyMetersPerSecond) >= 1 || Math.abs(this.getState().Speeds.omegaRadiansPerSecond) >= 0.5);

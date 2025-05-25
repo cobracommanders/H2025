@@ -36,12 +36,22 @@ public class RobotCommands {
 
   public Command intakeCommand(){
     return Commands.runOnce(robot::intakeRequest, requirements)
-    .andThen(robot.waitForState(RobotState.PREPARE_L1));
+    .andThen(robot.waitForState(RobotState.INTAKE));
   }
 
-  public Command L1Command(){
-    return Commands.runOnce(robot::prepareL1Request, requirements)
-    .andThen(robot.waitForState(RobotState.WAIT_L1));
+  public Command coralStationIntakeCommand(){
+    return Commands.runOnce(robot::coralStationIntakeRequest, requirements)
+    .andThen(robot.waitForState(RobotState.CORAL_STATION_INTAKE));
+  }
+
+  public Command L1Row1Command(){
+    return Commands.runOnce(robot::prepareL1Row1Request, requirements)
+    .andThen(robot.waitForState(RobotState.WAIT_L1_ROW_1));
+  }
+
+  public Command L1Row2Command(){
+    return Commands.runOnce(robot::prepareL1Row2Request, requirements)
+    .andThen(robot.waitForState(RobotState.WAIT_L1_ROW_2));
   }
 
   public Command deployClimb(){
@@ -49,7 +59,7 @@ public class RobotCommands {
     .andThen(robot.waitForState(RobotState.CLIMB_WAIT));
   }
 
-  public Command Climb(){
+  public Command climb(){
     return Commands.runOnce(robot::climbRequest, requirements);
   }
 
