@@ -10,8 +10,14 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
     
     // private final TalonFX lMotor;
     // private final TalonFX rMotor;
+<<<<<<< Updated upstream
     private final TalonFX intakeRollerMotor;
   
+=======
+    private final TalonFX lMotor;
+    //private final TalonFX rMotor;
+    
+>>>>>>> Stashed changes
     private IntakeRollersState currentState;
     private double setpoint;
     private double GEAR_RATIO = 3/1;
@@ -22,7 +28,12 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
     
     public IntakeRollersSubsystem() {
         super(IntakeRollersState.IDLE);
+<<<<<<< Updated upstream
         intakeRollerMotor = new TalonFX(Ports.IntakeRollersPorts.rollerMotor);
+=======
+        //rMotor = new TalonFX(Ports.IntakeRollersPorts.rMotor);
+        lMotor = new TalonFX(Ports.IntakeRollersPorts.lMotor);        
+>>>>>>> Stashed changes
         currentState = IntakeRollersState.IDLE;
     }
 
@@ -46,7 +57,12 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
 
     public void setIntakeRollerSpeeds(double IntakeRollersSpeeds){
       DogLog.log(getName() + "/Intake Roller speed", IntakeRollersSpeeds);
+<<<<<<< Updated upstream
       intakeRollerMotor.set(IntakeRollersSpeeds);
+=======
+      lMotor.set(IntakeRollersSpeeds);
+     // rMotor.set(-IntakeRollersSpeeds);
+>>>>>>> Stashed changes
     }
 
       @Override
