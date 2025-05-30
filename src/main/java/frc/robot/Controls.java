@@ -55,23 +55,23 @@ public class Controls {
   }
 
     public void configureDriverCommands() {
-        driver.rightBumper().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
+        driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
         driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
         driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.coralStationIntakeCommand());
         driver.leftBumper().onFalse(Robot.robotCommands.intakeIdleCommand());
         driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
         driver.leftTrigger().onFalse(Robot.robotCommands.intakeIdleCommand());
-        driver.Y().onTrue(Robot.robotCommands.climb());
-        driver.Y().onFalse(Robot.robotCommands.climbWait());
-        driver.B().onTrue(Robot.robotCommands.unClimb());
-        driver.B().onFalse(Robot.robotCommands.climbWait());
+        driver.POV0().onTrue(Robot.robotCommands.climb());
+        driver.POV0().onFalse(Robot.robotCommands.climbWait());
+        driver.POV180().onTrue(Robot.robotCommands.unClimb());
+        driver.POV180().onFalse(Robot.robotCommands.climbWait());
         driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
         driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-driver.leftY(), -driver.leftX()))));
     }
 
     public void configureOperatorCommands(){
-        operator.A().onTrue(Robot.robotCommands.L1Row1Command());
+        operator.Y().onTrue(Robot.robotCommands.L1Row1Command());
         operator.A().onTrue(Robot.robotCommands.L1Row2Command());
         operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
         operator.leftTrigger().and(operator.rightTrigger()).onTrue((Robot.robotCommands.deployClimb()));

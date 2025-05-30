@@ -7,12 +7,7 @@ public class Ports {
     }
 
     public static class IntakeRollersPorts{
-<<<<<<< Updated upstream
-        public static final int rollerMotor = 2;
-=======
-        public static final int lMotor = 52;
-        //public static final int rMotor = 3;
->>>>>>> Stashed changes
+        public static final int motor = 52;
     }
     public static class ClimberPorts{
         public static final int LEFT_CLIMBER_MOTOR = 4;

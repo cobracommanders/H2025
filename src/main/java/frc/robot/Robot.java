@@ -15,6 +15,7 @@ import frc.robot.stateMachine.RobotManager;
 import frc.robot.stateMachine.RobotState;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.intakeRollers.IntakeRollersSubsystem;
+import frc.robot.subsystems.intakeWrist.IntakeWristSubsystem;
 
 import java.util.Optional;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -41,6 +42,9 @@ public class Robot extends TimedRobot{
     public void robotInit() {
         controls.configureDefaultCommands();
         controls.configureDriverCommands();
+        controls.configureOperatorCommands();
+
+//        IntakeWristSubsystem.getInstance().setIntakePosition(0);
 
         NamedCommands.registerCommand("score", robotCommands.scoreCommand());
         NamedCommands.registerCommand("intake", robotCommands.intakeCommand());

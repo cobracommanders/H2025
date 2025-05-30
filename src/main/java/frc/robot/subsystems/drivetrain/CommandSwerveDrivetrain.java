@@ -33,8 +33,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.subsystems.drivetrain.TunerConstants.TunerSwerveDrivetrain;
-import frc.robot.vision.LimelightHelpers;
-import frc.robot.vision.LimelightLocalization;
+// import frc.robot.vision.LimelightHelpers;
+// import frc.robot.vision.LimelightLocalization;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements
@@ -48,7 +48,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private double m_lastSimTime;
     private Field2d field = new Field2d();
 
-    private LimelightLocalization limelightLocalization = new LimelightLocalization();
+   // private LimelightLocalization limelightLocalization = new LimelightLocalization();
 
     public void setYaw(Rotation2d rotation) {
         // this.getPigeon2().setYaw(angle);
@@ -161,9 +161,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     @Override
     public void periodic() {
-        limelightLocalization.update();
-        field.setRobotPose(this.getState().Pose);
-        SmartDashboard.putData(field);
+        //limelightLocalization.update();
+        //field.setRobotPose(this.getState().Pose);
+        //SmartDashboard.putData(field);
         /* Periodically try to apply the operator perspective */
         /* If we haven't applied the operator perspective before, then we should apply it regardless of DS state */
         /* This allows us to correct the perspective in case the robot code restarts mid-match */

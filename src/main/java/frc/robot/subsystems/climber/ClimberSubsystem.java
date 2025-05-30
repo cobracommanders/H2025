@@ -65,7 +65,7 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   }
 
   public void setClimberSpeeds(double ClimberSpeeds){
-      DogLog.log(getName() + "/Intake Roller speed", ClimberSpeeds);
+      //DogLog.log(getName() + "/Intake Roller speed", ClimberSpeeds);
       lMotor.set(ClimberSpeeds);
       rMotor.set(-ClimberSpeeds);
     }

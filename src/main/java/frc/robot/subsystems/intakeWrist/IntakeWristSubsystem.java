@@ -7,6 +7,7 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
@@ -20,7 +21,7 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     
   private final TalonFX lMotor;
   private final TalonFX rMotor;
-  private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(intakeWristConstants.P).withKI(intakeWristConstants.I).withKD(intakeWristConstants.D).withKG(intakeWristConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((3.0/1.0)));
+  private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(intakeWristConstants.P).withKI(intakeWristConstants.I).withKD(intakeWristConstants.D).withKG(intakeWristConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((24.107/1.0)));
   private double intakePosition;
   private final double tolerance;
   private boolean brakeModeEnabled;
@@ -31,12 +32,13 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
   
   public IntakeWristSubsystem() {
     super(IntakeWristState.IDLE);
+    motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     lMotor = new TalonFX(Ports.IntakeWristPorts.lMotor);
     rMotor = new TalonFX(Ports.IntakeWristPorts.rMotor);
-    // motor_config.MotionMagic.MotionMagicCruiseVelocity = intakeWristConstants.MotionMagicCruiseVelocity;
-    // motor_config.MotionMagic.MotionMagicAcceleration = intakeWristConstants.MotionMagicAcceleration;
-    // motor_config.MotionMagic.MotionMagicJerk = intakeWristConstants.MotionMagicJerk;
+    motor_config.MotionMagic.MotionMagicCruiseVelocity = intakeWristConstants.MotionMagicCruiseVelocity;
+    motor_config.MotionMagic.MotionMagicAcceleration = intakeWristConstants.MotionMagicAcceleration;
+    motor_config.MotionMagic.MotionMagicJerk = intakeWristConstants.MotionMagicJerk;
     lMotor.getConfigurator().apply(motor_config);
     rMotor.getConfigurator().apply(motor_config);
     tolerance = 0.04;
@@ -77,8 +79,8 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     intakePosition = lMotor.getPosition().getValueAsDouble();
     motorCurrent = lMotor.getStatorCurrent().getValueAsDouble();
     DogLog.log(getName() + "/Intake Position", intakePosition);
-    DogLog.log(getName() + "/Intake wrist motor current", motorCurrent);
-    DogLog.log(getName() + "/Intake wrist AtGoal", atGoal());
+    //DogLog.log(getName() + "/Intake wrist motor current", motorCurrent);
+    //DogLog.log(getName() + "/Intake wrist AtGoal", atGoal());
   }
 
   @Override

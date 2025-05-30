@@ -7,17 +7,7 @@ import frc.robot.Constants.intakeRollersConstants;
 import frc.robot.stateMachine.StateMachine;
 
 public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
-    
-    // private final TalonFX lMotor;
-    // private final TalonFX rMotor;
-<<<<<<< Updated upstream
-    private final TalonFX intakeRollerMotor;
-  
-=======
-    private final TalonFX lMotor;
-    //private final TalonFX rMotor;
-    
->>>>>>> Stashed changes
+    private final TalonFX motor;
     private IntakeRollersState currentState;
     private double setpoint;
     private double GEAR_RATIO = 3/1;
@@ -28,19 +18,15 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
     
     public IntakeRollersSubsystem() {
         super(IntakeRollersState.IDLE);
-<<<<<<< Updated upstream
-        intakeRollerMotor = new TalonFX(Ports.IntakeRollersPorts.rollerMotor);
-=======
         //rMotor = new TalonFX(Ports.IntakeRollersPorts.rMotor);
-        lMotor = new TalonFX(Ports.IntakeRollersPorts.lMotor);        
->>>>>>> Stashed changes
+        motor = new TalonFX(Ports.IntakeRollersPorts.motor);
         currentState = IntakeRollersState.IDLE;
     }
 
     @Override
     protected void collectInputs() {
-      motorStatorCurrent = intakeRollerMotor.getStatorCurrent().getValueAsDouble();
-      DogLog.log(getName() + "/Motor Stator Current", motorStatorCurrent);
+      motorStatorCurrent = motor.getStatorCurrent().getValueAsDouble();
+      //DogLog.log(getName() + "/Motor Stator Current", motorStatorCurrent);
     }
 
     public void setState(IntakeRollersState newState) {
@@ -56,13 +42,8 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
       }
 
     public void setIntakeRollerSpeeds(double IntakeRollersSpeeds){
-      DogLog.log(getName() + "/Intake Roller speed", IntakeRollersSpeeds);
-<<<<<<< Updated upstream
-      intakeRollerMotor.set(IntakeRollersSpeeds);
-=======
-      lMotor.set(IntakeRollersSpeeds);
-     // rMotor.set(-IntakeRollersSpeeds);
->>>>>>> Stashed changes
+      //DogLog.log(getName() + "/Intake Roller speed", IntakeRollersSpeeds);
+      motor.set(IntakeRollersSpeeds);
     }
 
       @Override
