@@ -31,9 +31,6 @@ public class RobotManager extends StateMachine<RobotState> {
     RobotState nextState = currentState;
     for (RobotFlag flag : flags.getChecked()) {
       switch (flag) {
-        case DEPLOY_CLIMB:
-            currentState = RobotState.PREPARE_CLIMB;
-            break;
         case CLIMB:
             currentState = RobotState.CLIMB;
             break;
@@ -81,12 +78,6 @@ public class RobotManager extends StateMachine<RobotState> {
     case CLIMB:
     case CLIMB_WAIT:
     break;
-
-    case PREPARE_CLIMB:
-      if(timeout(0.25)){
-        nextState = RobotState.CLIMB_WAIT;
-      }
-      break;
     case PREPARE_CORAL_STATION_INTAKE:
       if(intakeWrist.atGoal()){
         nextState = RobotState.CORAL_STATION_INTAKE;
@@ -201,11 +192,6 @@ public class RobotManager extends StateMachine<RobotState> {
         intakeWrist.setState(IntakeWristState.CAGE_IDLE);
         climber.setState(ClimberState.IDLE);
       }
-      case PREPARE_CLIMB -> {
-        intakeRollers.setState(IntakeRollersState.IDLE);
-        intakeWrist.setState(IntakeWristState.CAGE_IDLE);
-        climber.setState(ClimberState.UNCLIMB);
-      }
 
       
       }
@@ -238,10 +224,6 @@ public class RobotManager extends StateMachine<RobotState> {
 
   public void scoreRequest(){
     flags.check(RobotFlag.SCORE);
-  }
-
-  public void deployClimbRequest(){
-    flags.check(RobotFlag.DEPLOY_CLIMB);
   }
 
   public void climbRequest(){

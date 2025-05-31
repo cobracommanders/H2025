@@ -9,7 +9,6 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.ctre.phoenix6.swerve.SwerveRequest.ForwardPerspectiveValue;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.ClosedLoopOutputType;
 import com.fasterxml.jackson.databind.node.NullNode;
@@ -33,8 +32,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.subsystems.drivetrain.TunerConstants.TunerSwerveDrivetrain;
-// import frc.robot.vision.LimelightHelpers;
-// import frc.robot.vision.LimelightLocalization;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements
@@ -42,13 +39,11 @@ import frc.robot.subsystems.drivetrain.TunerConstants.TunerSwerveDrivetrain;
  */
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts;
-    private final double MaxAngularRate = Math.PI * 3.5;
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
     private Field2d field = new Field2d();
 
-   // private LimelightLocalization limelightLocalization = new LimelightLocalization();
+    //private LimelightLocalization limelightLocalization = new LimelightLocalization();
 
     public void setYaw(Rotation2d rotation) {
         // this.getPigeon2().setYaw(angle);
@@ -73,11 +68,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     /* Keep track if we've ever applied the operator perspective before or not */
     private boolean hasAppliedOperatorPerspective = false;
 
-    private final SlewRateLimiter xLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
+     private final SlewRateLimiter xLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
     private final SlewRateLimiter yLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
-
-    public SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    public SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     public boolean isMoving() {
         return (Math.abs(this.getState().Speeds.vxMetersPerSecond) >= 1 || Math.abs(this.getState().Speeds.vyMetersPerSecond) >= 1 || Math.abs(this.getState().Speeds.omegaRadiansPerSecond) >= 0.5);
@@ -85,9 +77,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
-        if (Utils.isSimulation()) {
-            startSimThread();
-        }
+        // if (Utils.isSimulation()) {
+        //     startSimThread();
+        // }
     }
         public void driveRobotRelative(ChassisSpeeds speeds) {
             this.setControl(new SwerveRequest.RobotCentric().withVelocityX(speeds.vxMetersPerSecond).withVelocityY(speeds.vyMetersPerSecond).withRotationalRate(speeds.omegaRadiansPerSecond).withDriveRequestType(DriveRequestType.Velocity));        
@@ -135,9 +127,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
              // Reference to this subsystem to set requirements
   
-        if (Utils.isSimulation()) {
-            startSimThread();
-        }
+        // if (Utils.isSimulation()) {
+        //     startSimThread();
+        // }
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
@@ -162,8 +154,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     @Override
     public void periodic() {
         //limelightLocalization.update();
-        //field.setRobotPose(this.getState().Pose);
-        //SmartDashboard.putData(field);
+        field.setRobotPose(this.getState().Pose);
+        SmartDashboard.putData(field);
         /* Periodically try to apply the operator perspective */
         /* If we haven't applied the operator perspective before, then we should apply it regardless of DS state */
         /* This allows us to correct the perspective in case the robot code restarts mid-match */

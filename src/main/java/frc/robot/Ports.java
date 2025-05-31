@@ -10,7 +10,7 @@ public class Ports {
         public static final int motor = 52;
     }
     public static class ClimberPorts{
-        public static final int LEFT_CLIMBER_MOTOR = 4;
-        public static final int RIGHT_CLIMBER_MOTOR = 5;
+        public static final int LEFT_CLIMBER_MOTOR = 43;
+        public static final int RIGHT_CLIMBER_MOTOR = 42;
     }
 }

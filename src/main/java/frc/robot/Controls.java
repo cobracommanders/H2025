@@ -6,6 +6,8 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.RobotCommands;
 import frc.robot.stateMachine.RobotManager;
 import frc.robot.drivers.Xbox;
+import frc.robot.subsystems.climber.ClimberState;
+import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
 
@@ -62,18 +64,17 @@ public class Controls {
         driver.leftBumper().onFalse(Robot.robotCommands.intakeIdleCommand());
         driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
         driver.leftTrigger().onFalse(Robot.robotCommands.intakeIdleCommand());
-        driver.POV0().onTrue(Robot.robotCommands.climb());
-        driver.POV0().onFalse(Robot.robotCommands.climbWait());
-        driver.POV180().onTrue(Robot.robotCommands.unClimb());
-        driver.POV180().onFalse(Robot.robotCommands.climbWait());
-        driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
-        driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-driver.leftY(), -driver.leftX()))));
+        driver.POV0().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.CLIMB)));
+        driver.POV0().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
+        driver.POV180().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.UNCLIMB)));
+        driver.POV180().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
+        //driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
+        //driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-driver.leftY(), -driver.leftX()))));
     }
 
     public void configureOperatorCommands(){
         operator.Y().onTrue(Robot.robotCommands.L1Row1Command());
         operator.A().onTrue(Robot.robotCommands.L1Row2Command());
         operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
-        operator.leftTrigger().and(operator.rightTrigger()).onTrue((Robot.robotCommands.deployClimb()));
     }
 }

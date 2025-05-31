@@ -54,11 +54,6 @@ public class RobotCommands {
     .andThen(robot.waitForState(RobotState.WAIT_L1_ROW_2));
   }
 
-  public Command deployClimb(){
-    return Commands.runOnce(robot::deployClimbRequest, requirements)
-    .andThen(robot.waitForState(RobotState.CLIMB_WAIT));
-  }
-
   public Command climb(){
     return Commands.runOnce(robot::climbRequest, requirements);
   }
