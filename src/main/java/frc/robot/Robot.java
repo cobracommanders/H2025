@@ -23,9 +23,9 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 
 public class Robot extends TimedRobot{
-    public static final double DEFAULT_PERIOD = 0.02;
-    public final Timer setupTimer = new Timer();
-    public double setupTime = 0;
+    // public static final double DEFAULT_PERIOD = 0.02;
+    // public final Timer setupTimer = new Timer();
+    // public double setupTime = 0;
 
     public static RobotManager robotManager = new RobotManager();
     public static RobotCommands robotCommands = new RobotCommands(robotManager);
@@ -96,7 +96,7 @@ public class Robot extends TimedRobot{
 
     @Override
     public void disabledInit() {
-        setupTimer.restart();
+        //setupTimer.restart();
         // drivetrain.enableBrakeMode(false);
     }
     @Override

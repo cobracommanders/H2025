@@ -9,6 +9,7 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.SwerveRequest.ForwardPerspectiveValue;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.ClosedLoopOutputType;
 import com.fasterxml.jackson.databind.node.NullNode;
@@ -38,9 +39,6 @@ import frc.robot.subsystems.drivetrain.TunerConstants.TunerSwerveDrivetrain;
  * subsystem so it can be used in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
-    private static final double kSimLoopPeriod = 0.005; // 5 ms
-    private Notifier m_simNotifier = null;
-    private double m_lastSimTime;
     private Field2d field = new Field2d();
 
     //private LimelightLocalization limelightLocalization = new LimelightLocalization();
@@ -68,8 +66,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     /* Keep track if we've ever applied the operator perspective before or not */
     private boolean hasAppliedOperatorPerspective = false;
 
-     private final SlewRateLimiter xLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
+    private final SlewRateLimiter xLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
     private final SlewRateLimiter yLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
+
+    public SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    public SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     public boolean isMoving() {
         return (Math.abs(this.getState().Speeds.vxMetersPerSecond) >= 1 || Math.abs(this.getState().Speeds.vyMetersPerSecond) >= 1 || Math.abs(this.getState().Speeds.omegaRadiansPerSecond) >= 0.5);
@@ -136,26 +137,26 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return run(() -> this.setControl(requestSupplier.get()));
     }
 
-    private void startSimThread() {
-        m_lastSimTime = Utils.getCurrentTimeSeconds();
+    // private void startSimThread() {
+    //     m_lastSimTime = Utils.getCurrentTimeSeconds();
 
-        /* Run simulation at a faster rate so PID gains behave more reasonably */
-        m_simNotifier = new Notifier(() -> {
-            final double currentTime = Utils.getCurrentTimeSeconds();
-            double deltaTime = currentTime - m_lastSimTime;
-            m_lastSimTime = currentTime;
+    //     /* Run simulation at a faster rate so PID gains behave more reasonably */
+    //     m_simNotifier = new Notifier(() -> {
+    //         final double currentTime = Utils.getCurrentTimeSeconds();
+    //         double deltaTime = currentTime - m_lastSimTime;
+    //         m_lastSimTime = currentTime;
 
-            /* use the measured time delta, get battery voltage from WPILib */
-            updateSimState(deltaTime, RobotController.getBatteryVoltage());
-        });
-        m_simNotifier.startPeriodic(kSimLoopPeriod);
-    }
+    //         /* use the measured time delta, get battery voltage from WPILib */
+    //         updateSimState(deltaTime, RobotController.getBatteryVoltage());
+    //     });
+    //     m_simNotifier.startPeriodic(kSimLoopPeriod);
+    // }
 
     @Override
     public void periodic() {
         //limelightLocalization.update();
         field.setRobotPose(this.getState().Pose);
-        SmartDashboard.putData(field);
+        //SmartDashboard.putData(field);
         /* Periodically try to apply the operator perspective */
         /* If we haven't applied the operator perspective before, then we should apply it regardless of DS state */
         /* This allows us to correct the perspective in case the robot code restarts mid-match */

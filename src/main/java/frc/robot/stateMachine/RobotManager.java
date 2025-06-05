@@ -48,6 +48,12 @@ public class RobotManager extends StateMachine<RobotState> {
             case WAIT_L1_ROW_2:
               nextState = RobotState.SCORE_L1_ROW_2;
               break;
+            case PREPARE_L1_ROW_1:
+              nextState = RobotState.SCORE_L1_ROW_1;
+              break;
+            case PREPARE_L1_ROW_2:
+              nextState = RobotState.SCORE_L1_ROW_2;
+              break;
             default:
               break;
             }
@@ -132,7 +138,7 @@ public class RobotManager extends StateMachine<RobotState> {
   protected void afterTransition(RobotState newState) {
     switch (newState) {
       case PREPARE_INTAKE -> {
-        intakeRollers.setState(IntakeRollersState.IDLE);
+        intakeRollers.setState(IntakeRollersState.INTAKE);
         intakeWrist.setState(IntakeWristState.INTAKE);
       }
       case PREPARE_CORAL_STATION_INTAKE -> {
@@ -148,7 +154,7 @@ public class RobotManager extends StateMachine<RobotState> {
         intakeWrist.setState(IntakeWristState.CORAL_STATION_INTAKE);
       }
       case PREPARE_IDLE ->{
-        intakeRollers.setState(IntakeRollersState.IDLE);
+        intakeRollers.setState(IntakeRollersState.INTAKE);
         intakeWrist.setState(IntakeWristState.IDLE);
       }
       case IDLE -> {

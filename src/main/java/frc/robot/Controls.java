@@ -10,6 +10,8 @@ import frc.robot.subsystems.climber.ClimberState;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
+import frc.robot.subsystems.intakeWrist.IntakeWristPositions;
+import frc.robot.subsystems.intakeWrist.IntakeWristSubsystem;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
@@ -60,21 +62,23 @@ public class Controls {
         driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
         driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
         driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
-        driver.leftBumper().onTrue(Robot.robotCommands.coralStationIntakeCommand());
-        driver.leftBumper().onFalse(Robot.robotCommands.intakeIdleCommand());
+        //driver.leftBumper().onTrue(Robot.robotCommands.coralStationIntakeCommand());
+        //driver.leftBumper().onFalse(Robot.robotCommands.intakeIdleCommand());
         driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
         driver.leftTrigger().onFalse(Robot.robotCommands.intakeIdleCommand());
-        driver.POV0().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.CLIMB)));
-        driver.POV0().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
-        driver.POV180().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.UNCLIMB)));
-        driver.POV180().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
-        //driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
-        //driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-driver.leftY(), -driver.leftX()))));
+        driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
+        driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-driver.leftY(), -driver.leftX()))));
     }
 
     public void configureOperatorCommands(){
         operator.Y().onTrue(Robot.robotCommands.L1Row1Command());
         operator.A().onTrue(Robot.robotCommands.L1Row2Command());
         operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
+        operator.POV90().onTrue(runOnce(()-> IntakeWristSubsystem.getInstance().increaseSetpoint()));
+        operator.POVMinus90().onTrue(runOnce(()-> IntakeWristSubsystem.getInstance().decreaseSetpoint()));
+        operator.POV0().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.CLIMB)));
+        operator.POV0().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
+        operator.POV180().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.UNCLIMB)));
+        operator.POV180().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
     }
 }

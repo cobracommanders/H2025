@@ -1,7 +1,5 @@
 package frc.robot.subsystems.intakeRollers;
 import com.ctre.phoenix6.hardware.TalonFX;
-
-import dev.doglog.DogLog;
 import frc.robot.Ports;
 import frc.robot.Constants.intakeRollersConstants;
 import frc.robot.stateMachine.StateMachine;

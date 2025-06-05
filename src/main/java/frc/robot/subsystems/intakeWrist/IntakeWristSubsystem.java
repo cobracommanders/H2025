@@ -9,7 +9,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Ports;
@@ -24,7 +23,6 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
   private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(intakeWristConstants.P).withKI(intakeWristConstants.I).withKD(intakeWristConstants.D).withKG(intakeWristConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((24.107/1.0)));
   private double intakePosition;
   private final double tolerance;
-  private boolean brakeModeEnabled;
   private double motorCurrent;
   private Follower right_motor_request = new Follower(Ports.IntakeWristPorts.lMotor, true);
 
@@ -42,7 +40,6 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     lMotor.getConfigurator().apply(motor_config);
     rMotor.getConfigurator().apply(motor_config);
     tolerance = 0.04;
-    brakeModeEnabled = false;
   }
 
   public void setState(IntakeWristState newState) {
@@ -70,6 +67,46 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
       };
   }
 
+  public void increaseSetpoint(){
+    switch (getState()) {
+      case L1_ROW_1 -> {
+        IntakeWristPositions.L1_ROW_1 += 0.005;
+        setIntakePosition(IntakeWristPositions.L1_ROW_1);
+        break;
+      }
+      case L1_ROW_2 -> {
+        IntakeWristPositions.L1_ROW_2 += 0.005;
+        setIntakePosition(IntakeWristPositions.L1_ROW_2);
+        break;
+      }
+      case INTAKE-> {
+        IntakeWristPositions.INTAKE += 0.005;
+        setIntakePosition(IntakeWristPositions.INTAKE);
+        break;
+      }
+    }
+  }
+
+  public void decreaseSetpoint(){
+    switch (getState()) {
+      case L1_ROW_1 -> {
+        IntakeWristPositions.L1_ROW_1 -= 0.005;
+        setIntakePosition(IntakeWristPositions.L1_ROW_1);
+        break;
+      }
+      case L1_ROW_2 -> {
+        IntakeWristPositions.L1_ROW_2 -= 0.005;
+        setIntakePosition(IntakeWristPositions.L1_ROW_2);
+        break;
+      }
+      case INTAKE-> {
+        IntakeWristPositions.INTAKE -= 0.005;
+        setIntakePosition(IntakeWristPositions.INTAKE);
+        break;
+      }
+}
+}
+
   public boolean isIdle() {
     return getState() == IntakeWristState.IDLE;
   }
@@ -78,7 +115,7 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
   public void collectInputs() {
     intakePosition = lMotor.getPosition().getValueAsDouble();
     motorCurrent = lMotor.getStatorCurrent().getValueAsDouble();
-    DogLog.log(getName() + "/Intake Position", intakePosition);
+    //DogLog.log(getName() + "/Intake Position", intakePosition);
     //DogLog.log(getName() + "/Intake wrist motor current", motorCurrent);
     //DogLog.log(getName() + "/Intake wrist AtGoal", atGoal());
   }
@@ -86,25 +123,12 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
   @Override
   public void periodic() {
     super.periodic();
-
-    if (DriverStation.isDisabled() && brakeModeEnabled == true) {
-      motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-      lMotor.getConfigurator().apply(motor_config);
-      rMotor.getConfigurator().apply(motor_config);
-      brakeModeEnabled = false;
-      }
-    else if (DriverStation.isEnabled() && brakeModeEnabled == false)  {
-      motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-      lMotor.getConfigurator().apply(motor_config);
-      rMotor.getConfigurator().apply(motor_config);
-      brakeModeEnabled = true;
-    }
     }
 
   public void setIntakePosition(double position) {
     rMotor.setControl(right_motor_request);
     lMotor.setControl(left_motor_request.withPosition(position));
-    DogLog.log(getName() + "/Elbow Setpoint", position);
+    //DogLog.log(getName() + "/Elbow Setpoint", position);
   }
 
     @Override
