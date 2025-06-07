@@ -31,15 +31,9 @@ public class RobotManager extends StateMachine<RobotState> {
     RobotState nextState = currentState;
     for (RobotFlag flag : flags.getChecked()) {
       switch (flag) {
-        case CLIMB:
-            currentState = RobotState.CLIMB;
-            break;
-        case UNCLIMB:
-            currentState = RobotState.UNCLIMB;
-            break;
-        case CLIMB_WAIT:
-            currentState = RobotState.CLIMB_WAIT;
-            break;
+        case DEEP_CLIMB:
+            nextState = RobotState.PREPARE_DEEP_CLIMB;
+          break;
         case SCORE:
           switch (nextState) {
             case WAIT_L1_ROW_1:
