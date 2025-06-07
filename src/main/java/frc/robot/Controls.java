@@ -68,6 +68,7 @@ public class Controls {
         driver.leftTrigger().onFalse(Robot.robotCommands.intakeIdleCommand());
         driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
         driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-driver.leftY(), -driver.leftX()))));
+        driver.POV0().onTrue(Robot.robotCommands.climbUpCommand());
     }
 
     public void configureOperatorCommands(){
@@ -76,9 +77,6 @@ public class Controls {
         operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
         operator.POV90().onTrue(runOnce(()-> IntakeWristSubsystem.getInstance().increaseSetpoint()));
         operator.POVMinus90().onTrue(runOnce(()-> IntakeWristSubsystem.getInstance().decreaseSetpoint()));
-        operator.POV0().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.CLIMB)));
-        operator.POV0().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
-        operator.POV180().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.UNCLIMB)));
-        operator.POV180().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
+        operator.POV0().onTrue(Robot.robotCommands.climbCommand());
     }
 }

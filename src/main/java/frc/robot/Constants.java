@@ -42,5 +42,9 @@ public final class Constants {
     public static final double MotionMagicJerk = 200;
   }
 
+  public static final class ClimberWheelConstants{
+    public static final double cageStallCurrent = 60;
+  }
+
 }
 

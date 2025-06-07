@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.stateMachine.RobotManager;
 import frc.robot.stateMachine.RobotState;
+import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.intakeWrist.IntakeWristPositions;
 
 import static edu.wpi.first.wpilibj2.command.Commands.none;
@@ -55,15 +56,42 @@ public class RobotCommands {
     .andThen(robot.waitForState(RobotState.WAIT_L1_ROW_2));
   }
 
+  public Command climbCommand() {
+    return (Commands.runOnce(robot::climbRequest, requirements))
+    .andThen(robot.waitForState(RobotState.DEEP_CLIMB_WAIT));
+}
+
+public Command climbUnClimbCommand() {
+  return new ConditionalCommand(Commands.runOnce(robot::climbUnclimbRequest), climbCommand(), () -> (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) || (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_CLIMB));
+}
+
+public Command climbIdleCommand() {
+  return new ConditionalCommand(Commands.runOnce(robot::climbIdleRequest), climbCommand(), () -> RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT || RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_CLIMB || RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_UNCLIMB);
+}
+
+public Command climbUpCommand() {
+  return new ConditionalCommand(Commands.runOnce(robot::climbClimbRequest), 
+  climbCommand(), 
+  () -> (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) || (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_CLIMB));
+}
+
   public Command climb(){
     return Commands.runOnce(robot::climbRequest, requirements);
   }
 
-  public Command unClimb(){
-    return Commands.runOnce(robot::unClimbRequest, requirements);
+  public Command climbUnclimb(){
+    return Commands.runOnce(robot::climbUnclimbRequest, requirements);
   }
 
-  public Command climbWait(){
-    return Commands.runOnce(robot::climbWaitRequest, requirements);
+  public Command climbClimb(){
+    return Commands.runOnce(robot::climbClimbRequest, requirements);
+  }
+
+  public Command climbIdle(){
+    return Commands.runOnce(robot::climbIdleRequest, requirements);
+  }
+
+   public Command changeClimberPID(){
+    return Commands.runOnce(() -> ClimberSubsystem.getInstance().setRetractConfig());
   }
 }
