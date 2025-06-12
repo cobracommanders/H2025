@@ -44,7 +44,7 @@ public class Robot extends TimedRobot{
         controls.configureDriverCommands();
         controls.configureOperatorCommands();
 
-//        IntakeWristSubsystem.getInstance().setIntakePosition(0);
+        IntakeWristSubsystem.getInstance().lMotor.setPosition(0);
 
         NamedCommands.registerCommand("score", robotCommands.scoreCommand());
         NamedCommands.registerCommand("intake", robotCommands.intakeCommand());

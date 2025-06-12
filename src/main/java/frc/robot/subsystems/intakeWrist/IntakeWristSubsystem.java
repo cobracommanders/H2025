@@ -9,6 +9,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Ports;
@@ -18,9 +20,9 @@ import frc.robot.subsystems.intakeRollers.IntakeRollersState;
 
 public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     
-  private final TalonFX lMotor;
+  public final TalonFX lMotor;
   private final TalonFX rMotor;
-  private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(intakeWristConstants.P).withKI(intakeWristConstants.I).withKD(intakeWristConstants.D).withKG(intakeWristConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((24.107/1.0)));
+  private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(intakeWristConstants.P).withKI(intakeWristConstants.I).withKD(intakeWristConstants.D).withKG(intakeWristConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((8.0357/1.0)));
   private double intakePosition;
   private final double tolerance;
   private double motorCurrent;
@@ -46,7 +48,7 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     setStateFromRequest(newState);
   }
   
-  protected IntakeRollersState getNextState(IntakeRollersState currentState) {
+  protected IntakeWristState getNextState(IntakeWristState currentState) {
     return currentState;
   }
 
@@ -115,7 +117,7 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
   public void collectInputs() {
     intakePosition = lMotor.getPosition().getValueAsDouble();
     motorCurrent = lMotor.getStatorCurrent().getValueAsDouble();
-    //DogLog.log(getName() + "/Intake Position", intakePosition);
+    DogLog.log(getName() + "/Intake Position", intakePosition);
     //DogLog.log(getName() + "/Intake wrist motor current", motorCurrent);
     //DogLog.log(getName() + "/Intake wrist AtGoal", atGoal());
   }

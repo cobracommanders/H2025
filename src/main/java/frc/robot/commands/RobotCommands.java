@@ -37,8 +37,8 @@ public class RobotCommands {
   }
 
   public Command intakeCommand(){
-    return Commands.runOnce(robot::intakeRequest, requirements)
-    .andThen(robot.waitForState(RobotState.INTAKE));
+    return Commands.runOnce(robot::intakeRequest, requirements);
+    // /.andThen(robot.waitForState(RobotState.INTAKE));
   }
 
   public Command coralStationIntakeCommand(){
