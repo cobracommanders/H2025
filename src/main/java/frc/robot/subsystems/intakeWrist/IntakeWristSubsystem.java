@@ -70,6 +70,7 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
   }
 
   public void increaseSetpoint(){
+    System.out.println("Setpoints increased to " + (IntakeWristPositions.INTAKE + 0.005));
     switch (getState()) {
       case L1_ROW_1 -> {
         IntakeWristPositions.L1_ROW_1 += 0.005;
@@ -90,6 +91,7 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
   }
 
   public void decreaseSetpoint(){
+    System.out.println("Setpoints decreased to " + (IntakeWristPositions.INTAKE - 0.005));
     switch (getState()) {
       case L1_ROW_1 -> {
         IntakeWristPositions.L1_ROW_1 -= 0.005;

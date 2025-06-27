@@ -1,4 +1,5 @@
 package frc.robot.stateMachine;
+import dev.doglog.DogLog;
 import frc.robot.subsystems.climber.ClimberState;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.climberwheel.ClimberWheelSpeeds;
@@ -104,6 +105,7 @@ public class RobotManager extends StateMachine<RobotState> {
       } 
       break;
     case PREPARE_DEEP_CLIMB:
+      System.out.println("preparing deep climb");
       if(intakeWrist.atGoal()){
         nextState = RobotState.DEEP_CLIMB_DEPLOY;
       }
