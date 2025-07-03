@@ -99,12 +99,17 @@ public class Robot extends TimedRobot{
         //setupTimer.restart();
         // drivetrain.enableBrakeMode(false);
     }
+
+    Timer timer = new Timer();
+    boolean hasFired;
     @Override
     public void autonomousInit() {
+        timer.start();
         // new FullScore().schedule();
         // drivetrain.enableBrakeMode(true);
         // matchStarted = true;
         IntakeRollersSubsystem.getInstance();
+        hasFired = false;
 
         // if (autoToRun == null)
             // autoToRun = defaultAuto;
@@ -136,8 +141,34 @@ public class Robot extends TimedRobot{
         //Sets the LEDs to a pattern for auto, this could be edited to include code for if vision is aligned for auto diagnosis
     }
 
+    
     @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    // System.out.println(timer.get());
+        if(timer.get() > 5 && timer.get() < 7){
+            if(!hasFired){
+                IntakeWristSubsystem.getInstance().setIntakePosition(.15);
+                // robotCommands.L1Row1Command();
+                IntakeRollersSubsystem.getInstance().setIntakeRollerSpeeds(.2);
+                hasFired = true;
+            }
+        }else if(timer.get() > 7){
+            if(hasFired){
+                // robotCommands.idleCommand();
+                IntakeWristSubsystem.getInstance().setIntakePosition(.15);
+                // robotCommands.L1Row1Command();
+                IntakeRollersSubsystem.getInstance().setIntakeRollerSpeeds(0);
+                hasFired = false;
+                CommandScheduler.getInstance().cancelAll();;
+            }
+        }else if(timer.get() > 9){
+            if(!hasFired){
+                CommandScheduler.getInstance().run();
+                hasFired = true;
+            }
+        }
+
+  }
 
 
     @Override

@@ -54,6 +54,11 @@ public class ClimberWheelSubsystem extends StateMachine<ClimberWheelState>{
       } 
     }
 
+    public void set(double speed){
+      System.out.print("spinning climber wheels");
+      climberWheelMotor.set(speed);
+    }
+
       public void setClimberWheelPositions(double climberWheelSpeed) {
         DogLog.log(getName() + "/Climber wheel speed", climberWheelSpeed);
         climberWheelMotor.set(climberWheelSpeed);

@@ -8,6 +8,7 @@ import frc.robot.stateMachine.RobotManager;
 import frc.robot.drivers.Xbox;
 import frc.robot.subsystems.climber.ClimberState;
 import frc.robot.subsystems.climber.ClimberSubsystem;
+import frc.robot.subsystems.climberwheel.ClimberWheelSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.intakeWrist.IntakeWristPositions;
@@ -45,9 +46,9 @@ public class Controls {
     }
     private Supplier<SwerveRequest> controlStyle;
     private void newControlStyle () {
-        controlStyle = () -> drive.withVelocityX((-driver.leftY() * driver.leftY() * driver.leftY() * MaxSpeed)*.75) // Drive forward -Y
-            .withVelocityY((-driver.leftX() * driver.leftX() * driver.leftX() * MaxSpeed)*.75) // Drive left with negative X (left)
-            .withRotationalRate((driver.rightX() * AngularRate)*.75); // Drive counterclockwise with negative X (left)
+        controlStyle = () -> drive.withVelocityX((-(driver.leftY()*.5) * (driver.leftY()*.5) * (driver.leftY()*.5) * MaxSpeed)*.7) // Drive forward -Y
+            .withVelocityY((-(driver.leftX()*.5) * (driver.leftX()*.5) * (driver.leftX()*.5) * MaxSpeed)*.7) // Drive left with negative X (left)
+            .withRotationalRate((driver.rightX() * AngularRate)*.1); // Drive counterclockwise with negative X (left)
     }
 
 
@@ -55,19 +56,18 @@ public class Controls {
     public void configureDefaultCommands() {
         newControlStyle();
          CommandSwerveDrivetrain.getInstance().setDefaultCommand(repeatingSequence( // Drivetrain will execute this command periodically
-         runOnce(()-> CommandSwerveDrivetrain.getInstance().driveFieldRelative(new ChassisSpeeds(-driver.leftY() * driver.leftY() * driver.leftY() * MaxSpeed, -driver.leftX() * driver.leftX() * driver.leftX() * MaxSpeed, driver.rightX() * AngularRate)), CommandSwerveDrivetrain.getInstance())));
+         runOnce(()-> CommandSwerveDrivetrain.getInstance().driveFieldRelative(new ChassisSpeeds(-(driver.leftY()*.75) * (driver.leftY()) * (driver.leftY()) * MaxSpeed, -(driver.leftX()*.75) * (driver.leftX()) * (driver.leftX()) * MaxSpeed, driver.rightX() * AngularRate)), CommandSwerveDrivetrain.getInstance())));
   }
 
     public void configureDriverCommands() {
         driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
         driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
         driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
-        //driver.leftBumper().onTrue(Robot.robotCommands.coralStationIntakeCommand());
-        //driver.leftBumper().onFalse(Robot.robotCommands.intakeIdleCommand());
+        
         driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
         driver.leftTrigger().onFalse(Robot.robotCommands.intakeIdleCommand());
         driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
-        driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-driver.leftY(), -driver.leftX()))));
+        driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-(driver.leftY()*.5), -(driver.leftX()*.5)))));
         driver.POV0().onTrue(Robot.robotCommands.climbUpCommand());
     }
 
@@ -77,6 +77,18 @@ public class Controls {
         operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
         operator.POV90().onTrue(runOnce(()-> IntakeWristSubsystem.getInstance().increaseSetpoint()));
         operator.POVMinus90().onTrue(runOnce(()-> IntakeWristSubsystem.getInstance().decreaseSetpoint()));
-        operator.POV0().onTrue(Robot.robotCommands.climbCommand());
+        operator.rightBumper().onTrue(Robot.robotCommands.coralStationIntakeCommand());
+        operator.rightBumper().onFalse(Robot.robotCommands.idleCommand());
+
+        operator.start().onTrue(runOnce(() -> ClimberSubsystem.getInstance().set(-.2)));
+        operator.start().onFalse(runOnce(() -> ClimberSubsystem.getInstance().set(0)));
+        operator.back().onTrue(runOnce(() -> ClimberSubsystem.getInstance().set(.2)));
+        operator.back().onFalse(runOnce(() -> ClimberSubsystem.getInstance().set(0)));
+        operator.X().onTrue(runOnce(() -> ClimberWheelSubsystem.getInstance().set(0.7)));
+        operator.X().onFalse(runOnce(() -> ClimberWheelSubsystem.getInstance().set(0)));
+        // operator.start().onTrue(Robot.robotManager.climber.setSpeed(.2));
+        // operator.start().onFalse(Robot.robotManager.climber.setSpeed(0));
+        // operator.back().onTrue(Robot.robotManager.climber.setSpeed(-.2));
+        // operator.back().onFalse(Robot.robotManager.climber.setSpeed(0));
     }
 }

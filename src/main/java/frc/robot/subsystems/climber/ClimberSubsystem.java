@@ -12,6 +12,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Ports;
 import frc.robot.stateMachine.StateMachine;
@@ -115,6 +116,12 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
     lMotor.set(speed);
     rMotor.set(speed);
   }
+
+  // public Command setSpeed(double speed){
+  //   lMotor.set(speed);
+  //   rMotor.set(speed);
+  //   return null;
+  // }
 
   public void setClimberPosition(double climberSetpoint){
     rMotor.setControl(right_motor_request);

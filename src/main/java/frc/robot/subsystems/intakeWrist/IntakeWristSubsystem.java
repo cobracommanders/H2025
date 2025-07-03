@@ -87,6 +87,11 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
         setIntakePosition(IntakeWristPositions.INTAKE);
         break;
       }
+      case CORAL_STATION_INTAKE->{
+        IntakeWristPositions.CORAL_STATION_INTAKE += 0.005;
+        setIntakePosition(IntakeWristPositions.CORAL_STATION_INTAKE);
+        break;
+      }
     }
   }
 
@@ -106,6 +111,11 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
       case INTAKE-> {
         IntakeWristPositions.INTAKE -= 0.005;
         setIntakePosition(IntakeWristPositions.INTAKE);
+        break;
+      }
+      case CORAL_STATION_INTAKE->{
+        IntakeWristPositions.CORAL_STATION_INTAKE -= 0.005;
+        setIntakePosition(IntakeWristPositions.CORAL_STATION_INTAKE);
         break;
       }
 }
