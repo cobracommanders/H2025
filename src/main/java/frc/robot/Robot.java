@@ -20,6 +20,7 @@ import frc.robot.subsystems.intakeWrist.IntakeWristSubsystem;
 import java.util.Optional;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 
 public class Robot extends TimedRobot{
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot{
     public static final Controls controls = new Controls();
 
     private SendableChooser<Command> autoChooser;
+    private SendableChooser<Command> newAutoChooser;
 
 
     @Override
@@ -58,6 +60,13 @@ public class Robot extends TimedRobot{
         CommandSwerveDrivetrain.getInstance();
         IntakeRollersSubsystem.getInstance();
 
+        // newAutoChooser = AutoBuilder.buildAutoChooser("1CoralBlindMiddle");
+        newAutoChooser = new SendableChooser<Command>();
+        newAutoChooser.addOption("1CoralBlindMiddle", new PathPlannerAuto("1CoralBlindMiddle"));
+        // newAutoChooser = AutoBuilder.buildAutoChooser("1CoralBlindMiddle");
+        newAutoChooser.addOption("processor 2.5 coral", new PathPlannerAuto("2.5 Coral Blind Processor Side"));
+        newAutoChooser.addOption("non-processor 2.5 coral", new PathPlannerAuto("2.5 Coral Blind Non-Processor Side"));
+
         autoChooser = AutoBuilder.buildAutoChooser();
 
         // Limelight.getInstance();
@@ -68,6 +77,7 @@ public class Robot extends TimedRobot{
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         SmartDashboard.putData(autoChooser);
+        SmartDashboard.putData(newAutoChooser);
         if (alliance.isEmpty()) {
             alliance = DriverStation.getAlliance();
         }    
@@ -113,8 +123,11 @@ public class Robot extends TimedRobot{
 
         // if (autoToRun == null)
             // autoToRun = defaultAuto;
-        if (autoChooser.getSelected() != null)
-            autoChooser.getSelected().schedule();
+        // if (autoChooser.getSelected() != null)
+        //     autoChooser.getSelected().schedule();
+        if(newAutoChooser.getSelected() != null){
+            newAutoChooser.getSelected().schedule();
+        }
         //autoToRun = new HighHighCone();
 
         // if (alliance.get() == Alliance.Blue) {

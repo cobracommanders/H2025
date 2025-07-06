@@ -9,10 +9,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Ports;
 import frc.robot.Constants.intakeWristConstants;
 import frc.robot.stateMachine.StateMachine;
@@ -22,6 +26,7 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     
   public final TalonFX lMotor;
   private final TalonFX rMotor;
+  public final DutyCycleEncoder encoder;
   private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(intakeWristConstants.P).withKI(intakeWristConstants.I).withKD(intakeWristConstants.D).withKG(intakeWristConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((8.0357/1.0)));
   private double intakePosition;
   private final double tolerance;
@@ -41,6 +46,7 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     motor_config.MotionMagic.MotionMagicJerk = intakeWristConstants.MotionMagicJerk;
     lMotor.getConfigurator().apply(motor_config);
     rMotor.getConfigurator().apply(motor_config);
+    encoder = new DutyCycleEncoder(0);
     tolerance = 0.04;
   }
 
@@ -136,6 +142,7 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
 
   @Override
   public void periodic() {
+    // System.out.println(encoder.get());ph
     super.periodic();
     }
 
