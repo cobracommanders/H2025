@@ -123,11 +123,19 @@ public class Robot extends TimedRobot{
 
         // if (autoToRun == null)
             // autoToRun = defaultAuto;
+<<<<<<< HEAD
         // if (autoChooser.getSelected() != null)
         //     autoChooser.getSelected().schedule();
         if(newAutoChooser.getSelected() != null){
             newAutoChooser.getSelected().schedule();
         }
+=======
+        if (autoChooser.getSelected() != null)
+            autoChooser.getSelected().schedule();
+        // if(newAutoChooser.getSelected() != null){
+        //     newAutoChooser.getSelected().schedule();
+        // }
+>>>>>>> d9b6368 (add: slow button)
         //autoToRun = new HighHighCone();
 
         // if (alliance.get() == Alliance.Blue) {

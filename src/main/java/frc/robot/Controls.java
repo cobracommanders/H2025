@@ -24,9 +24,10 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 public class Controls {
     private  double MaxSpeed = TunerConstants.kSpeedAt12Volts; // Initial max is true top speed
     private final double TurtleSpeed = 0.1; // Reduction in speed from Max Speed, 0.1 = 10%
-    private final double MaxAngularRate = Math.PI * 3.5; // .75 rotation per second max angular velocity.  Adjust for max turning rate speed.
+    private double MaxAngularRate = Math.PI * 3.5; // .75 rotation per second max angular velocity.  Adjust for max turning rate speed.
     private final double TurtleAngularRate = Math.PI * 0.5; // .75 rotation per second max angular velocity.  Adjust for max turning rate speed.
     private double AngularRate = MaxAngularRate; // This will be updated when turtle and reset to MaxAngularRate
+    private double drivetrainSpeed = .75;
 
     CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
 
@@ -56,8 +57,18 @@ public class Controls {
     public void configureDefaultCommands() {
         newControlStyle();
          CommandSwerveDrivetrain.getInstance().setDefaultCommand(repeatingSequence( // Drivetrain will execute this command periodically
-         runOnce(()-> CommandSwerveDrivetrain.getInstance().driveFieldRelative(new ChassisSpeeds(-(driver.leftY()*.75) * (driver.leftY()) * (driver.leftY()) * MaxSpeed, -(driver.leftX()*.75) * (driver.leftX()) * (driver.leftX()) * MaxSpeed, driver.rightX() * AngularRate)), CommandSwerveDrivetrain.getInstance())));
-  }
+         runOnce(()-> CommandSwerveDrivetrain.getInstance().driveFieldRelative(new ChassisSpeeds(-(driver.leftY()*drivetrainSpeed) * (driver.leftY()) * (driver.leftY()) * MaxSpeed, -(driver.leftX()*drivetrainSpeed) * (driver.leftX()) * (driver.leftX()) * MaxSpeed, driver.rightX() * AngularRate)), CommandSwerveDrivetrain.getInstance())));
+    }
+
+    public void decreaseSpeeds(){
+        AngularRate = Math.PI * 1;
+        drivetrainSpeed = .3;
+    }
+
+    public void normalizeSpeeds(){
+        AngularRate = Math.PI * 3.5;
+        drivetrainSpeed = .75;
+    }
 
     public void configureDriverCommands() {
         driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
@@ -69,6 +80,8 @@ public class Controls {
         driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
         driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-(driver.leftY()*.5), -(driver.leftX()*.5)))));
         driver.POV0().onTrue(Robot.robotCommands.climbUpCommand());
+        driver.rightBumper().onTrue(runOnce(() -> decreaseSpeeds()));
+        driver.rightBumper().onFalse(runOnce(() -> normalizeSpeeds()));
     }
 
     public void configureOperatorCommands(){
