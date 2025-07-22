@@ -30,13 +30,19 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "wait for l1 row 1"
+                  "name": "l1 row 2"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "score"
+                  "name": "wait for l1 row 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intake"
                 }
               }
             ]

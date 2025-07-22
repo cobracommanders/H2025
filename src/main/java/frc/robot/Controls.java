@@ -67,7 +67,7 @@ public class Controls {
 
     public void normalizeSpeeds(){
         AngularRate = Math.PI * 3.5;
-        drivetrainSpeed = .75;
+        drivetrainSpeed = .6;
     }
 
     public void configureDriverCommands() {
@@ -97,7 +97,7 @@ public class Controls {
         operator.start().onFalse(runOnce(() -> ClimberSubsystem.getInstance().set(0)));
         operator.back().onTrue(runOnce(() -> ClimberSubsystem.getInstance().set(.2)));
         operator.back().onFalse(runOnce(() -> ClimberSubsystem.getInstance().set(0)));
-        operator.X().onTrue(runOnce(() -> ClimberWheelSubsystem.getInstance().set(0.7)));
+        operator.X().onTrue(runOnce(() -> ClimberWheelSubsystem.getInstance().set(-0.7)));
         operator.X().onFalse(runOnce(() -> ClimberWheelSubsystem.getInstance().set(0)));
         // operator.start().onTrue(Robot.robotManager.climber.setSpeed(.2));
         // operator.start().onFalse(Robot.robotManager.climber.setSpeed(0));

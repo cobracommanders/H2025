@@ -123,19 +123,10 @@ public class Robot extends TimedRobot{
 
         // if (autoToRun == null)
             // autoToRun = defaultAuto;
-<<<<<<< HEAD
-        // if (autoChooser.getSelected() != null)
-        //     autoChooser.getSelected().schedule();
-        if(newAutoChooser.getSelected() != null){
-            newAutoChooser.getSelected().schedule();
-        }
-=======
-        if (autoChooser.getSelected() != null)
             autoChooser.getSelected().schedule();
         // if(newAutoChooser.getSelected() != null){
         //     newAutoChooser.getSelected().schedule();
         // }
->>>>>>> d9b6368 (add: slow button)
         //autoToRun = new HighHighCone();
 
         // if (alliance.get() == Alliance.Blue) {
@@ -166,28 +157,28 @@ public class Robot extends TimedRobot{
     @Override
   public void autonomousPeriodic() {
     // System.out.println(timer.get());
-        if(timer.get() > 5 && timer.get() < 7){
-            if(!hasFired){
-                IntakeWristSubsystem.getInstance().setIntakePosition(.15);
-                // robotCommands.L1Row1Command();
-                IntakeRollersSubsystem.getInstance().setIntakeRollerSpeeds(.2);
-                hasFired = true;
-            }
-        }else if(timer.get() > 7){
-            if(hasFired){
-                // robotCommands.idleCommand();
-                IntakeWristSubsystem.getInstance().setIntakePosition(.15);
-                // robotCommands.L1Row1Command();
-                IntakeRollersSubsystem.getInstance().setIntakeRollerSpeeds(0);
-                hasFired = false;
-                CommandScheduler.getInstance().cancelAll();;
-            }
-        }else if(timer.get() > 9){
-            if(!hasFired){
-                CommandScheduler.getInstance().run();
-                hasFired = true;
-            }
-        }
+        // if(timer.get() > 5 && timer.get() < 7){
+        //     if(!hasFired){
+        //         IntakeWristSubsystem.getInstance().setIntakePosition(.15);
+        //         // robotCommands.L1Row1Command();
+        //         IntakeRollersSubsystem.getInstance().setIntakeRollerSpeeds(.2);
+        //         hasFired = true;
+        //     }
+        // }else if(timer.get() > 7){
+        //     if(hasFired){
+        //         // robotCommands.idleCommand();
+        //         IntakeWristSubsystem.getInstance().setIntakePosition(.15);
+        //         // robotCommands.L1Row1Command();
+        //         IntakeRollersSubsystem.getInstance().setIntakeRollerSpeeds(0);
+        //         hasFired = false;
+        //         CommandScheduler.getInstance().cancelAll();;
+        //     }
+        // }else if(timer.get() > 9){
+        //     if(!hasFired){
+        //         CommandScheduler.getInstance().run();
+        //         hasFired = true;
+        //     }
+        // }
 
   }
 

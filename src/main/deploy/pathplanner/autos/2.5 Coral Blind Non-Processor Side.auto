@@ -5,7 +5,7 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
               {
@@ -30,7 +30,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "wait for l1 row 1"
+                  "name": "l1 row 2"
                 }
               },
               {
@@ -40,7 +40,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "score"
+                        "name": "intake"
                       }
                     },
                     {
@@ -84,7 +84,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "intake"
+                        "name": "score"
                       }
                     }
                   ]
@@ -116,7 +116,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "score"
+                        "name": "intake"
                       }
                     },
                     {
@@ -160,7 +160,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "intake"
+                        "name": "score"
                       }
                     }
                   ]

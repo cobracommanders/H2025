@@ -47,7 +47,7 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     lMotor.getConfigurator().apply(motor_config);
     rMotor.getConfigurator().apply(motor_config);
     encoder = new DutyCycleEncoder(0);
-    tolerance = 0.04;
+    tolerance = 0.1;
   }
 
   public void setState(IntakeWristState newState) {
