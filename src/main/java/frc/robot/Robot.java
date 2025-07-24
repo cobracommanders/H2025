@@ -48,7 +48,7 @@ public class Robot extends TimedRobot{
 
         IntakeWristSubsystem.getInstance().lMotor.setPosition(0);
 
-        NamedCommands.registerCommand("score", robotCommands.scoreCommand());
+        NamedCommands.registerCommand("score", robotCommands.scoreCommand ());
         NamedCommands.registerCommand("intake", robotCommands.intakeCommand());
         NamedCommands.registerCommand("return to idle", robotCommands.idleCommand());
         NamedCommands.registerCommand("l1 row 1", robotCommands.L1Row1Command());
