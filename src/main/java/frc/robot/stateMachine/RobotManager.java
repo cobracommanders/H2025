@@ -68,19 +68,19 @@ public class RobotManager extends StateMachine<RobotState> {
             }
         break;
         case INTAKE:
-          currentState = RobotState.PREPARE_INTAKE;
+          nextState = RobotState.PREPARE_INTAKE;
           break;
         case CORAL_STATION_INTAKE:
-          currentState = RobotState.PREPARE_CORAL_STATION_INTAKE;
+          nextState = RobotState.PREPARE_CORAL_STATION_INTAKE;
           break;
         case IDLE:
-          currentState = RobotState.PREPARE_IDLE;
+          nextState = RobotState.PREPARE_IDLE;
           break;
         case L1_ROW_1:
-          currentState = RobotState.PREPARE_L1_ROW_1;
+          nextState = RobotState.PREPARE_L1_ROW_1;
           break;
         case L1_ROW_2:
-          currentState = RobotState.PREPARE_L1_ROW_1;
+          nextState = RobotState.PREPARE_L1_ROW_1;
           break;
       }
     }
