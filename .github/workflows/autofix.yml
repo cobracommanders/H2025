@@ -1,44 +1,44 @@
-name: autofix.ci
+# name: autofix.ci
 
-on: [push, pull_request]
+# on: [push, pull_request]
 
-permissions:
-  contents: read
+# permissions:
+#   contents: read
 
-jobs:
-  validation:
-    name: Validate Gradle wrappers
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Git repository
-        uses: actions/checkout@v4
-      - name: Validate Gradle wrappers
-        uses: gradle/actions/wrapper-validation@v4
-  autofix:
-    name: Autofix
-    runs-on: ubuntu-latest
-    needs:
-      - validation
-    steps:
-      - name: Checkout Git repository
-        uses: actions/checkout@v4
+# jobs:
+#   validation:
+#     name: Validate Gradle wrappers
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Git repository
+#         uses: actions/checkout@v4
+#       - name: Validate Gradle wrappers
+#         uses: gradle/actions/wrapper-validation@v4
+#   autofix:
+#     name: Autofix
+#     runs-on: ubuntu-latest
+#     needs:
+#       - validation
+#     steps:
+#       - name: Checkout Git repository
+#         uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: "temurin"
-          java-version: 17
-          cache: "gradle"
+#       - name: Setup Java
+#         uses: actions/setup-java@v4
+#         with:
+#           distribution: "temurin"
+#           java-version: 17
+#           cache: "gradle"
 
-      - name: Format with Spotless
-        run: ./gradlew spotlessApply
-        continue-on-error: true
+#       - name: Format with Spotless
+#         run: ./gradlew spotlessApply
+#         continue-on-error: true
 
-      - name: Fix Error Prone issues and regenerate collision avoidance graph
-        run: ./gradlew build
-        continue-on-error: true
-        env:
-            ERRORPRONE_AUTOFIX: 1
+#       - name: Fix Error Prone issues and regenerate collision avoidance graph
+#         run: ./gradlew build
+#         continue-on-error: true
+#         env:
+#             ERRORPRONE_AUTOFIX: 1
 
-      - name: Run autofix.ci
-        uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
+#       - name: Run autofix.ci
+#         uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
