@@ -11,7 +11,6 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
     private double GEAR_RATIO = 3/1;
     private double manualSpeed;
     private double motorStatorCurrent;
-    //this is a change!
     
     private boolean isActivated = true;
     
