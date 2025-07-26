@@ -5,6 +5,9 @@ bin/
 .DS_Store
 .AppleDouble
 .LSOverride
+*.wpilog
+*.lock
+*.bin
 ### C++ ###
 # Prerequisites
 *.d
@@ -42,7 +45,6 @@ bin/
 ### Java ###
 # Compiled class file
 *.class
-.class
 
 # Log file
 *.log
