@@ -19,7 +19,6 @@ import frc.robot.stateMachine.StateMachine;
 
 public class Climber extends StateMachine<ClimberStates>{
     public final DoubleSubscriber climberSpeed = DogLog.tunable("climb/Speed [-1, 1]", 0.0);
-    private final DutyCycle encoder;
     private final String name = getName();
     private final TalonFX wheelMotor;
     private final TalonFX winchMotor;
@@ -33,7 +32,6 @@ public class Climber extends StateMachine<ClimberStates>{
     public Climber(){
       super(ClimberStates.IDLE);
       //TODO: update configs
-      encoder = new DutyCycle(new DigitalInput(Ports.ClimberPorts.CLIMER_DUTY_CYCLE_ENCODER));
       winch_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       wheel_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       winch_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.DEPLOY_MOTION_MAGIC_CRUISE_VELOCITY;
@@ -49,7 +47,6 @@ public class Climber extends StateMachine<ClimberStates>{
   public void collectInputs(){
     motorCurrent = wheelMotor.getStatorCurrent().getValueAsDouble();
     climberPosition = winchMotor.getPosition().getValueAsDouble();
-    absolutePosition = encoder.getOutput() - ClimberConstants.EncoderOffset;
     //TODO: update climberPosition
     //TODO: log important inputs
     DogLog.log(name + "/Climber postions", absolutePosition);
@@ -97,9 +94,9 @@ public class Climber extends StateMachine<ClimberStates>{
   public boolean atGoal(){
     return switch(getState()){
       case DEPLOYING -> 
-        MathUtil.isNear(ClimberPositions.DEPLOYING, absolutePosition, tolerance);
+        MathUtil.isNear(ClimberPositions.DEPLOYING, climberPosition, tolerance);
       case CLIMBING ->
-        MathUtil.isNear(ClimberPositions.CLIMBING, absolutePosition, tolerance);
+        MathUtil.isNear(ClimberPositions.CLIMBING, climberPosition, tolerance);
       case WAIT_FOR_CAGE ->
         cageDetected();
       default ->
