@@ -3,6 +3,7 @@ package frc.robot.subsystems.climber;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -14,6 +15,7 @@ import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycle;
 import frc.robot.Constants.ClimberConstants;
+import frc.robot.Ports.ClimberPorts;
 import frc.robot.Ports;
 import frc.robot.stateMachine.StateMachine;
 
@@ -21,13 +23,15 @@ public class Climber extends StateMachine<ClimberStates>{
     public final DoubleSubscriber climberSpeed = DogLog.tunable("climb/Speed [-1, 1]", 0.0);
     private final String name = getName();
     private final TalonFX wheelMotor;
-    private final TalonFX winchMotor;
+    private final TalonFX leftMotor;
+    private final TalonFX rightMotor;
     private TalonFXConfiguration wheel_motor_config = new TalonFXConfiguration();
     private TalonFXConfiguration winch_motor_config = new TalonFXConfiguration();
     public double climberPosition;
     private MotionMagicVoltage winch_motor_request = new MotionMagicVoltage(0).withSlot(0);
     private double tolerance = 0.02;
     private double motorCurrent = 0.0;
+    private Follower rightMotorRequest = new Follower(ClimberPorts.LEFT_MOTOR_PORT, true);
     private double absolutePosition;
     public Climber(){
       super(ClimberStates.IDLE);
@@ -37,8 +41,11 @@ public class Climber extends StateMachine<ClimberStates>{
       winch_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.DEPLOY_MOTION_MAGIC_CRUISE_VELOCITY;
       winch_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.DEPLOY_MOTION_MAGIC_ACCELERATION;
       winch_motor_config.MotionMagic.MotionMagicJerk = ClimberConstants.DEPLOY_MOTION_MAGIC_JERK;
-      winchMotor = new TalonFX(Ports.ClimberPorts.WINCH_CLIMBER_MOTOR_PORT);
+      rightMotor = new TalonFX(Ports.ClimberPorts.RIGHT_MOTOR_PORT);
+      leftMotor = new TalonFX(Ports.ClimberPorts.LEFT_MOTOR_PORT);
       wheelMotor = new TalonFX(Ports.ClimberPorts.WHEEL_CLIMBER_MOTOR_PORT);
+      leftMotor.getConfigurator().apply(winch_motor_config);
+      rightMotor.getConfigurator().apply(winch_motor_config);
       climberPosition = 0; //fix this by linking it to absolute encoder
     }
    
@@ -46,7 +53,7 @@ public class Climber extends StateMachine<ClimberStates>{
   @Override
   public void collectInputs(){
     motorCurrent = wheelMotor.getStatorCurrent().getValueAsDouble();
-    climberPosition = winchMotor.getPosition().getValueAsDouble();
+    climberPosition = leftMotor.getPosition().getValueAsDouble();
     //TODO: update climberPosition
     //TODO: log important inputs
     DogLog.log(name + "/Climber postions", absolutePosition);
@@ -60,7 +67,8 @@ public class Climber extends StateMachine<ClimberStates>{
   }
 
   public void setClimberSpeed() {
-    winchMotor.set(climberSpeed.get());
+    leftMotor.set(climberSpeed.get());
+    rightMotor.setControl(rightMotorRequest);
   }
 
   public ClimberStates getNextState(ClimberStates currentState){
@@ -134,7 +142,7 @@ public class Climber extends StateMachine<ClimberStates>{
 
 
   public void setWinchSpeed(double winchSpeed){
-    winchMotor.set(winchSpeed);
+    leftMotor.set(winchSpeed);
   }
    public void setClimberWheelSpeed(double speed){
     DogLog.log(name + "/Wheel Speed", speed);
