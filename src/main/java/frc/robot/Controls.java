@@ -6,9 +6,6 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.RobotCommands;
 import frc.robot.stateMachine.RobotManager;
 import frc.robot.drivers.Xbox;
-import frc.robot.subsystems.climber.ClimberState;
-import frc.robot.subsystems.climber.ClimberSubsystem;
-import frc.robot.subsystems.climberwheel.ClimberWheelSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.intakeWrist.IntakeWristPositions;
@@ -79,7 +76,7 @@ public class Controls {
         driver.leftTrigger().onFalse(Robot.robotCommands.intakeIdleCommand());
         driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
         driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-(driver.leftY()*.5), -(driver.leftX()*.5)))));
-        driver.POV0().onTrue(Robot.robotCommands.climbUpCommand());
+        //driver.POV0().onTrue(Robot.robotCommands.climbUpCommand());
         driver.rightBumper().onTrue(runOnce(() -> decreaseSpeeds()));
         driver.rightBumper().onFalse(runOnce(() -> normalizeSpeeds()));
     }
@@ -93,12 +90,7 @@ public class Controls {
         operator.rightBumper().onTrue(Robot.robotCommands.coralStationIntakeCommand());
         operator.rightBumper().onFalse(Robot.robotCommands.idleCommand());
 
-        operator.start().onTrue(runOnce(() -> ClimberSubsystem.getInstance().set(-.2)));
-        operator.start().onFalse(runOnce(() -> ClimberSubsystem.getInstance().set(0)));
-        operator.back().onTrue(runOnce(() -> ClimberSubsystem.getInstance().set(.2)));
-        operator.back().onFalse(runOnce(() -> ClimberSubsystem.getInstance().set(0)));
-        operator.X().onTrue(runOnce(() -> ClimberWheelSubsystem.getInstance().set(-0.7)));
-        operator.X().onFalse(runOnce(() -> ClimberWheelSubsystem.getInstance().set(0)));
+        operator.leftTrigger().and(operator.rightTrigger()).onTrue(Robot.robotCommands.climbCommand());
         // operator.start().onTrue(Robot.robotManager.climber.setSpeed(.2));
         // operator.start().onFalse(Robot.robotManager.climber.setSpeed(0));
         // operator.back().onTrue(Robot.robotManager.climber.setSpeed(-.2));

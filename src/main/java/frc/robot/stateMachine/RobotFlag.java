@@ -7,9 +7,6 @@ public enum RobotFlag {
     L1_ROW_1,
     L1_ROW_2,
     SCORE,
-    DEEP_CLIMB,
-    CLIMB_CLIMB,
-    CLIMB_IDLE,
-    CLIMB_UNCLIMB,
+    CLIMB
     
 }

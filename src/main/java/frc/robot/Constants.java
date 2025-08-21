@@ -30,21 +30,15 @@ public final class Constants {
     public static final double stallCurrent = 150;
   }
 
-  public static final class ClimberConstants{
-    public static final double P = 320;
-    public static final double I = 0;
-    public static final double D = 0;
-    public static final double G = 0;
-    public static final double DeployMotionMagicAcceleration = 100; //100
-    public static final double DeployMotionMagicCruiseVelocity = 250; //250
-    public static final double RetractMotionMagicAcceleration = 0.44;
-    public static final double RetractMotionMagicCruiseVelocity = 0.44;
-    public static final double MotionMagicJerk = 200;
-  }
-
-  public static final class ClimberWheelConstants{
-    public static final double cageStallCurrent = 60;
-  }
+  public static class ClimberConstants {
+    // TODO: Find the values for these.
+    public static final double DEPLOY_MOTION_MAGIC_CRUISE_VELOCITY = 0;
+    public static final double DEPLOY_MOTION_MAGIC_ACCELERATION = 0;
+    public static final double DEPLOY_MOTION_MAGIC_JERK = 0;
+    public static final double CAGE_DETECECTION_CURRENT = 25;
+    public static final double ClimberGearRatio = 0.0;
+    public static final double EncoderOffset = 0.314;
+}
 
 }
 

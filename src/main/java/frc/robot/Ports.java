@@ -9,11 +9,11 @@ public class Ports {
     public static class IntakeRollersPorts{
         public static final int motor = 52;
     }
-    public static class ClimberPorts{
-        public static final int LEFT_CLIMBER_MOTOR = 43;
-        public static final int RIGHT_CLIMBER_MOTOR = 42;
+    
+    public static class ClimberPorts {
+        public static int WHEEL_CLIMBER_MOTOR_PORT = 31;
+        public static int WINCH_CLIMBER_MOTOR_PORT = 30;
+        public static int CLIMER_DUTY_CYCLE_ENCODER = 1; //this is plugged into DIO
     }
-    public static class ClimberWheelPorts{
-        public static final int CLIMBER_WHEEL_MOTOR = 0;
-    }
+    
 }
