@@ -7,6 +7,7 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import dev.doglog.DogLog;
@@ -32,12 +33,12 @@ public class Climber extends StateMachine<ClimberStates>{
     private double tolerance = 0.02;
     private double motorCurrent = 0.0;
     private Follower rightMotorRequest = new Follower(ClimberPorts.LEFT_MOTOR_PORT, true);
-    private double absolutePosition;
     public Climber(){
       super(ClimberStates.IDLE);
       //TODO: update configs
       winch_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       wheel_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      winch_motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
       winch_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.DEPLOY_MOTION_MAGIC_CRUISE_VELOCITY;
       winch_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.DEPLOY_MOTION_MAGIC_ACCELERATION;
       winch_motor_config.MotionMagic.MotionMagicJerk = ClimberConstants.DEPLOY_MOTION_MAGIC_JERK;
@@ -56,7 +57,7 @@ public class Climber extends StateMachine<ClimberStates>{
     climberPosition = leftMotor.getPosition().getValueAsDouble();
     //TODO: update climberPosition
     //TODO: log important inputs
-    DogLog.log(name + "/Climber postions", absolutePosition);
+    DogLog.log(name + "/Climber postions", climberPosition);
     DogLog.log(name + "/Cage detection", cageDetected());
     //implement input collection (these values will be used in state transitions)
   }
@@ -68,7 +69,7 @@ public class Climber extends StateMachine<ClimberStates>{
 
   public void setClimberSpeed() {
     leftMotor.set(climberSpeed.get());
-    rightMotor.setControl(rightMotorRequest);
+    rightMotor.set(climberSpeed.get());
   }
 
   public ClimberStates getNextState(ClimberStates currentState){
@@ -142,9 +143,10 @@ public class Climber extends StateMachine<ClimberStates>{
 
 
   public void setWinchSpeed(double winchSpeed){
-    leftMotor.set(winchSpeed);
+    leftMotor.set(-winchSpeed);
+    rightMotor.set(winchSpeed);
   }
-   public void setClimberWheelSpeed(double speed){
+   public void setClimberWheelSpeed(double speed){  
     DogLog.log(name + "/Wheel Speed", speed);
     wheelMotor.set(speed);
    }

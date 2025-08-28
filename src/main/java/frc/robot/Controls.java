@@ -19,7 +19,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 public class Controls {
-    private  double MaxSpeed = TunerConstants.kSpeedAt12Volts; // Initial max is true top speed
+    private double MaxSpeed = TunerConstants.kSpeedAt12Volts; // Initial max is true top speed
     private final double TurtleSpeed = 0.1; // Reduction in speed from Max Speed, 0.1 = 10%
     private double MaxAngularRate = Math.PI * 3.5; // .75 rotation per second max angular velocity.  Adjust for max turning rate speed.
     private final double TurtleAngularRate = Math.PI * 0.5; // .75 rotation per second max angular velocity.  Adjust for max turning rate speed.
