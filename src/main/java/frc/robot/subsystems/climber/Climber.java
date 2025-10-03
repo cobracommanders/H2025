@@ -30,7 +30,7 @@ public class Climber extends StateMachine<ClimberStates>{
     private TalonFXConfiguration winch_motor_config = new TalonFXConfiguration();
     public double climberPosition;
     private MotionMagicVoltage winch_motor_request = new MotionMagicVoltage(0).withSlot(0);
-    private double tolerance = 0.02;
+    private double tolerance = 1;
     private double motorCurrent = 0.0;
     private Follower rightMotorRequest = new Follower(ClimberPorts.LEFT_MOTOR_PORT, true);
     public Climber(){
@@ -49,15 +49,15 @@ public class Climber extends StateMachine<ClimberStates>{
       rightMotor.getConfigurator().apply(winch_motor_config);
       climberPosition = 0; //fix this by linking it to absolute encoder
     }
-   
-  
+
+
   @Override
   public void collectInputs(){
     motorCurrent = wheelMotor.getStatorCurrent().getValueAsDouble();
     climberPosition = leftMotor.getPosition().getValueAsDouble();
     //TODO: update climberPosition
     //TODO: log important inputs
-    DogLog.log(name + "/Climber postions", climberPosition);
+    DogLog.log(name + "/Climber position", climberPosition);
     DogLog.log(name + "/Cage detection", cageDetected());
     //implement input collection (these values will be used in state transitions)
   }
@@ -102,10 +102,11 @@ public class Climber extends StateMachine<ClimberStates>{
 
   public boolean atGoal(){
     return switch(getState()){
-      case DEPLOYING -> 
-        MathUtil.isNear(ClimberPositions.DEPLOYING, climberPosition, tolerance);
+      case DEPLOYING ->
+
+        climberPosition < ClimberPositions.DEPLOYING;
       case CLIMBING ->
-        MathUtil.isNear(ClimberPositions.CLIMBING, climberPosition, tolerance);
+      climberPosition < ClimberPositions.CLIMBING;
       case WAIT_FOR_CAGE ->
         cageDetected();
       default ->
@@ -146,7 +147,7 @@ public class Climber extends StateMachine<ClimberStates>{
     leftMotor.set(-winchSpeed);
     rightMotor.set(winchSpeed);
   }
-   public void setClimberWheelSpeed(double speed){  
+   public void setClimberWheelSpeed(double speed){
     DogLog.log(name + "/Wheel Speed", speed);
     wheelMotor.set(speed);
    }
