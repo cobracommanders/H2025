@@ -5,5 +5,6 @@ public enum ClimberStates {
     DEPLOYING,
     WAIT_FOR_CAGE,
     CLIMBING,
-    CLIMBED,   
+    CLIMBED,
+    KEEP_SUCKING
 }
