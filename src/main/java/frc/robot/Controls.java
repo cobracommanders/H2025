@@ -66,24 +66,27 @@ public class Controls {
     }
 
     public void configureDriverCommands() {
+        // Reset gyro heading
         driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
-        driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
-        driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
-        
-        driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
-        driver.leftTrigger().onFalse(Robot.robotCommands.intakeIdleCommand());
+
+        // TODO: Bind driver controls to commands
+        // Example:
+        // driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
+        // driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
+
+        // Brake and point wheels
         driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
         driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-(driver.leftY()*.5), -(driver.leftX()*.5)))));
-        //driver.POV0().onTrue(Robot.robotCommands.climbUpCommand());
+
+        // Slow mode
         driver.rightBumper().onTrue(runOnce(() -> decreaseSpeeds()));
         driver.rightBumper().onFalse(runOnce(() -> normalizeSpeeds()));
     }
 
     public void configureOperatorCommands(){
         // TODO: Configure operator controller bindings
-        // Example: operator.Y().onTrue(Robot.robotCommands.prepareScoreCommand());
-        operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
-        operator.rightBumper().onTrue(Robot.robotCommands.coralStationIntakeCommand());
-        operator.rightBumper().onFalse(Robot.robotCommands.idleCommand());
+        // Example:
+        // operator.Y().onTrue(Robot.robotCommands.prepareScoreCommand());
+        // operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
     }
 }
