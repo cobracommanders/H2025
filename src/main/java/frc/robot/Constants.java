@@ -21,9 +21,9 @@ public final class Constants {
     public static final double I = 2;
     public static final double D = 2;//1
     public static final double G = 0.275;//0.5
-    public static final double MotionMagicAcceleration = 50;//100
-    public static final double MotionMagicCruiseVelocity = 100;//100
-    public static final double MotionMagicJerk = 200;//100
+    public static final double MotionMagicAcceleration = 3;//100
+    public static final double MotionMagicCruiseVelocity = 10;//100
+    public static final double MotionMagicJerk = 10;//100
   }
 
   public static final class intakeRollersConstants{
