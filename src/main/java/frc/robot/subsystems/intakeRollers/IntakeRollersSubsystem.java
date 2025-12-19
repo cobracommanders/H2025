@@ -9,7 +9,7 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
     private double motorStatorCurrent;
 
     public IntakeRollersSubsystem() {
-        super(IntakeRollersState.IDLE);
+        super(null); // TODO: Pass your initial state here once you define states
         // TODO: Initialize your motor(s) here
         // You need to create a TalonFX motor using the port from Ports.IntakeRollersPorts
         motor = new TalonFX(Ports.IntakeRollersPorts.motor);
@@ -49,21 +49,13 @@ public class IntakeRollersSubsystem extends StateMachine<IntakeRollersState>{
       // TODO: Set the appropriate motor speed for each state
       // Use a switch statement to handle each state in IntakeRollersState
       // Call setIntakeRollerSpeeds() with values from IntakeRollersSpeeds
-      switch (newState) {
-        case IDLE -> {
-          // TODO: Set idle speed
-        }
-        case INTAKE -> {
-          // TODO: Set intake speed
-        }
-        case CORAL_STATION_INTAKE -> {
-          // TODO: Set coral station intake speed
-        }
-        case SCORE -> {
-          // TODO: Set scoring speed
-        }
-        default -> {}
-      }
+      //
+      // Example:
+      // switch (newState) {
+      //   case IDLE -> setIntakeRollerSpeeds(IntakeRollersSpeeds.IDLE);
+      //   case INTAKE -> setIntakeRollerSpeeds(IntakeRollersSpeeds.INTAKE);
+      //   ...
+      // }
     }
 
     private static IntakeRollersSubsystem instance;

@@ -34,7 +34,7 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
   private MotionMagicVoltage left_motor_request = new MotionMagicVoltage(0).withSlot(0);
 
   public IntakeWristSubsystem() {
-    super(IntakeWristState.IDLE);
+    super(null); // TODO: Pass your initial state here once you define states
 
     // TODO: Initialize your motors here
     // You need to create TalonFX motors using ports from Ports.IntakeWristPorts
@@ -92,20 +92,13 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     // TODO: Set the appropriate position for each state
     // Use a switch statement to handle each state in IntakeWristState
     // Call setIntakePosition() with values from IntakeWristPositions
-    switch (newState) {
-      case IDLE -> {
-        // TODO: Set idle position
-      }
-      case INTAKE -> {
-        // TODO: Set intake position
-      }
-      case CORAL_STATION_INTAKE -> {
-        // TODO: Set coral station intake position
-      }
-      case SCORE -> {
-        // TODO: Set scoring position
-      }
-    }
+    //
+    // Example:
+    // switch (newState) {
+    //   case IDLE -> setIntakePosition(IntakeWristPositions.IDLE);
+    //   case INTAKE -> setIntakePosition(IntakeWristPositions.INTAKE);
+    //   ...
+    // }
   }
 
   private static IntakeWristSubsystem instance;
