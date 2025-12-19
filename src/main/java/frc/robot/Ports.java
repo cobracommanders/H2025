@@ -10,10 +10,4 @@ public class Ports {
         public static final int motor = 52;
     }
     
-    public static class ClimberPorts {
-        public static int RIGHT_MOTOR_PORT = 42;
-        public static int WHEEL_CLIMBER_MOTOR_PORT = 0;
-        public static int LEFT_MOTOR_PORT = 43;
-    }
-    
 }

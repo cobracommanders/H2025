@@ -1,7 +1,5 @@
 package frc.robot.stateMachine;
 
-import edu.wpi.first.wpilibj.util.Color;
-
 public enum RobotState {
   PREPARE_IDLE,
   IDLE,
@@ -14,9 +12,5 @@ public enum RobotState {
   PREPARE_INTAKE,
   INTAKE,
   PREPARE_CORAL_STATION_INTAKE,
-  CORAL_STATION_INTAKE,
-  CLIMB,
-  MANUAL_CLIMB_FORWARD,
-  MANUAL_CLIMB_BACKWARD
-
+  CORAL_STATION_INTAKE
 }

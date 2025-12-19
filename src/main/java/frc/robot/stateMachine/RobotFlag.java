@@ -6,7 +6,5 @@ public enum RobotFlag {
     IDLE,
     L1_ROW_1,
     L1_ROW_2,
-    SCORE,
-    CLIMB
-    
+    SCORE
 }

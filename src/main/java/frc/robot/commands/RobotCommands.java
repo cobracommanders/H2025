@@ -16,7 +16,7 @@ public class RobotCommands {
 
   public RobotCommands(RobotManager robot) {
     this.robot = robot;
-    var requirementsList = List.of(robot.intakeRollers, robot.intakeWrist, robot.climber);
+    var requirementsList = List.of(robot.intakeRollers, robot.intakeWrist);
     requirements = requirementsList.toArray(Subsystem[]::new);
   }
 
@@ -53,9 +53,4 @@ public class RobotCommands {
     return Commands.runOnce(robot::prepareL1Row2Request, requirements)
     .andThen(robot.waitForState(RobotState.WAIT_L1_ROW_2));
   }
-
-  public Command climbCommand() {
-    return (Commands.runOnce(robot::climbRequest, requirements))
-    .andThen(robot.waitForState(RobotState.CLIMB));
-  }  
 }

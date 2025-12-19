@@ -90,10 +90,5 @@ public class Controls {
         operator.rightBumper().onTrue(Robot.robotCommands.coralStationIntakeCommand());
         operator.rightBumper().onFalse(Robot.robotCommands.idleCommand());
 
-        operator.leftTrigger().and(operator.rightTrigger()).onTrue(Robot.robotCommands.climbCommand());
-        // operator.start().onTrue(Robot.robotManager.climber.setSpeed(.2));
-        // operator.start().onFalse(Robot.robotManager.climber.setSpeed(0));
-        // operator.back().onTrue(Robot.robotManager.climber.setSpeed(-.2));
-        // operator.back().onFalse(Robot.robotManager.climber.setSpeed(0));
     }
 }

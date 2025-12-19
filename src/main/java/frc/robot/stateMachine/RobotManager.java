@@ -1,7 +1,4 @@
 package frc.robot.stateMachine;
-import dev.doglog.DogLog;
-import frc.robot.subsystems.climber.Climber;
-import frc.robot.subsystems.climber.ClimberStates;
 import frc.robot.subsystems.intakeRollers.IntakeRollersState;
 import frc.robot.subsystems.intakeRollers.IntakeRollersSubsystem;
 import frc.robot.subsystems.intakeWrist.IntakeWristState;
@@ -10,16 +7,13 @@ import frc.robot.subsystems.intakeWrist.IntakeWristSubsystem;
 public class RobotManager extends StateMachine<RobotState> {
   public final IntakeRollersSubsystem intakeRollers;
   public final IntakeWristSubsystem intakeWrist;
-  public final Climber climber;
 
   public final FlagManager<RobotFlag> flags = new FlagManager<>("RobotManager", RobotFlag.class);
 
   public RobotManager() {
       super(RobotState.IDLE);
-      this.climber = Climber.getInstance();
       this.intakeRollers = IntakeRollersSubsystem.getInstance();
       this.intakeWrist = IntakeWristSubsystem.getInstance();
-    
   }
 
   @Override
@@ -65,8 +59,6 @@ public class RobotManager extends StateMachine<RobotState> {
         case L1_ROW_2:
           nextState = RobotState.PREPARE_L1_ROW_1;
           break;
-        case CLIMB:
-            nextState = RobotState.CLIMB;
       }
     }
 
@@ -140,9 +132,6 @@ public class RobotManager extends StateMachine<RobotState> {
         intakeRollers.setState(IntakeRollersState.INTAKE);
         intakeWrist.setState(IntakeWristState.INTAKE);
       }
-      case CLIMB -> {
-        climber.setState(ClimberStates.DEPLOYING);
-      }
       case CORAL_STATION_INTAKE -> {
         intakeRollers.setState(IntakeRollersState.CORAL_STATION_INTAKE);
         intakeWrist.setState(IntakeWristState.CORAL_STATION_INTAKE);
@@ -209,10 +198,6 @@ public class RobotManager extends StateMachine<RobotState> {
 
   public void scoreRequest(){
     flags.check(RobotFlag.SCORE);
-  }
-
-  public void climbRequest(){
-    flags.check(RobotFlag.CLIMB);
   }
 
   // public void stopScoringRequest() {
