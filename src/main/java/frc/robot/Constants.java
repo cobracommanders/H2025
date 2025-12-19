@@ -15,20 +15,17 @@ public final class Constants {
     public static final int OPERATOR_CONTROLLER_ID = 1;
   }
 
-  // TODO: Define PID and motion magic constants for your intake wrist
-  // These values will need to be tuned for your specific mechanism
   public static final class intakeWristConstants {
-    public static final double P = 0.0;
-    public static final double I = 0.0;
-    public static final double D = 0.0;
-    public static final double G = 0.0; // Gravity feedforward for arm
-    public static final double MotionMagicAcceleration = 0.0;
-    public static final double MotionMagicCruiseVelocity = 0.0;
-    public static final double MotionMagicJerk = 0.0;
+    public static final double P = 60;
+    public static final double I = 2;
+    public static final double D = 2;
+    public static final double G = 0.275;
+    public static final double MotionMagicAcceleration = 3;
+    public static final double MotionMagicCruiseVelocity = 10;
+    public static final double MotionMagicJerk = 10;
   }
 
-  // TODO: Define constants for your intake rollers
   public static final class intakeRollersConstants {
-    public static final double stallCurrent = 0.0; // Current threshold for game piece detection
+    public static final double stallCurrent = 150;
   }
 }

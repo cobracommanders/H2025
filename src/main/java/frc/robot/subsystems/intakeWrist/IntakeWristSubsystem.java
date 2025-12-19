@@ -6,7 +6,6 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import dev.doglog.DogLog;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Ports;
 import frc.robot.Constants.intakeWristConstants;
 import frc.robot.stateMachine.StateMachine;
@@ -16,9 +15,6 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
   // Motor controllers for the wrist mechanism
   public final TalonFX lMotor;
   private final TalonFX rMotor;
-
-  // Encoder for position feedback
-  public final DutyCycleEncoder encoder;
 
   // Motor configuration - you'll need to set up PID, motion magic, etc.
   private final TalonFXConfiguration motor_config = new TalonFXConfiguration();
@@ -45,9 +41,6 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     // Set up PID constants, motion magic parameters, neutral mode, etc.
     // Use values from Constants.intakeWristConstants
     // Apply the configuration to both motors using motor.getConfigurator().apply(config)
-
-    // Initialize the encoder
-    encoder = new DutyCycleEncoder(Ports.IntakeWristPorts.encoder);
 
     // Set the tolerance for position checking
     tolerance = 0.1;
