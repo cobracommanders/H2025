@@ -1,5 +1,25 @@
 # FRC Robot Programming Hackathon Starter
 
+## Scope of Work
+
+**What's already done for you:**
+- Swerve drivetrain (fully configured and driveable)
+- Motor objects created and wired to correct ports
+- PID values tuned for the wrist mechanism
+- State machine framework (base classes provided)
+- Controller input handling
+
+**What you need to implement:**
+- Define states for the robot and subsystems (~4 states each, 4 enums)
+- Define motor speeds and wrist positions (~4 constants each, 2 files)
+- Implement motor control methods in subsystems (2 files)
+- Wire up state machine transitions in RobotManager
+- Create commands and bind them to controller buttons
+
+**Estimated effort:** This is designed for a single-day hackathon. Start with designing your state machine on paper, then work through the files in order.
+
+---
+
 Welcome to the FRC Robot Programming Hackathon! This project provides a skeleton codebase for programming an FRC robot with an intake mechanism. Your task is to design and implement the control logic to make the robot functional.
 
 ## Project Overview
