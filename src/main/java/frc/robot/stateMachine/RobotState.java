@@ -1,14 +1,14 @@
 package frc.robot.stateMachine;
 
+// TODO: Define the states for your robot's overall state machine
+// Think about what high-level states your robot needs to be in
 public enum RobotState {
+  // Example states - modify these based on your robot's needs
   PREPARE_IDLE,
   IDLE,
-  PREPARE_L1_ROW_1,
-  WAIT_L1_ROW_1,
-  SCORE_L1_ROW_1,
-  PREPARE_L1_ROW_2,
-  WAIT_L1_ROW_2,
-  SCORE_L1_ROW_2,
+  PREPARE_SCORE,
+  WAIT_SCORE,
+  SCORING,
   PREPARE_INTAKE,
   INTAKE,
   PREPARE_CORAL_STATION_INTAKE,

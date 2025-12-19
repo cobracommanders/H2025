@@ -1,10 +1,12 @@
 package frc.robot.stateMachine;
 
+// TODO: Define the flags/requests that can trigger state transitions
+// These are typically triggered by controller inputs
 public enum RobotFlag {
+    // Example flags - modify these based on your robot's needs
     INTAKE,
     CORAL_STATION_INTAKE,
     IDLE,
-    L1_ROW_1,
-    L1_ROW_2,
+    PREPARE_SCORE,
     SCORE
 }

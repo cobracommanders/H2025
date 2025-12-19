@@ -1,10 +1,11 @@
 package frc.robot.subsystems.intakeWrist;
 
+// TODO: Define the states for your intake wrist subsystem
+// Think about what different positions the wrist needs to be in
 public enum IntakeWristState {
+    // Example states - modify these based on your robot's needs
     IDLE,
-    CAGE_IDLE,
     INTAKE,
     CORAL_STATION_INTAKE,
-    L1_ROW_1,
-    L1_ROW_2
-}
+    SCORE
+}       

@@ -24,26 +24,14 @@ public class RobotManager extends StateMachine<RobotState> {
   protected RobotState getNextState(RobotState currentState) {
     flags.log();
     RobotState nextState = currentState;
+
+    // TODO: Implement state transition logic based on flags
+    // Handle flag-triggered transitions
     for (RobotFlag flag : flags.getChecked()) {
       switch (flag) {
         case SCORE:
-          switch (nextState) {
-            case WAIT_L1_ROW_1:
-              nextState = RobotState.SCORE_L1_ROW_1;
-                break;
-            case WAIT_L1_ROW_2:
-              nextState = RobotState.SCORE_L1_ROW_2;
-              break;
-            case PREPARE_L1_ROW_1:
-              nextState = RobotState.SCORE_L1_ROW_1;
-              break;
-            case PREPARE_L1_ROW_2:
-              nextState = RobotState.SCORE_L1_ROW_2;
-              break;
-            default:
-              break;
-            }
-        break;
+          // TODO: Determine when scoring should be allowed
+          break;
         case INTAKE:
           nextState = RobotState.PREPARE_INTAKE;
           break;
@@ -53,127 +41,83 @@ public class RobotManager extends StateMachine<RobotState> {
         case IDLE:
           nextState = RobotState.PREPARE_IDLE;
           break;
-        case L1_ROW_1:
-          nextState = RobotState.PREPARE_L1_ROW_1;
-          break;
-        case L1_ROW_2:
-          nextState = RobotState.PREPARE_L1_ROW_1;
+        case PREPARE_SCORE:
+          nextState = RobotState.PREPARE_SCORE;
           break;
       }
     }
 
-  switch (currentState) {
-    case WAIT_L1_ROW_1:
-    case WAIT_L1_ROW_2:
-    case IDLE:
-    break;
-    case PREPARE_CORAL_STATION_INTAKE:
-      if(intakeWrist.atGoal()){
-        nextState = RobotState.CORAL_STATION_INTAKE;
-      }
-      break;
-    case PREPARE_L1_ROW_1:
-      if(intakeWrist.atGoal()){
-        nextState = RobotState.WAIT_L1_ROW_1;
-      }
-      break;
-    case PREPARE_L1_ROW_2:
-      if(intakeWrist.atGoal()){
-        nextState = RobotState.WAIT_L1_ROW_2;
-      }
-      break;
-    case PREPARE_IDLE:
-      if(intakeWrist.atGoal()){
-        nextState = RobotState.IDLE;
-      }
-      break;
-    case PREPARE_INTAKE:
-      if(intakeWrist.atGoal()){
-        nextState = RobotState.INTAKE;
-      }
-      break;
-    case SCORE_L1_ROW_1:
-      if (timeout(2)){
-        nextState = RobotState.PREPARE_IDLE;
-      }
-      break;
-    case SCORE_L1_ROW_2:
-      if (timeout(2)){
-        nextState = RobotState.PREPARE_IDLE;
-      }
-      break;
-    case INTAKE:
-      if(IntakeRollersSubsystem.getInstance().hasCoral()){
-        nextState = RobotState.PREPARE_L1_ROW_1;
-      }
-      break;
-    case CORAL_STATION_INTAKE:
-      if(IntakeRollersSubsystem.getInstance().hasCoral()){
-        nextState = RobotState.PREPARE_L1_ROW_1;
-      }
+    // TODO: Implement automatic state transitions
+    // Handle automatic transitions based on current state
+    switch (currentState) {
+      case WAIT_SCORE:
+      case IDLE:
+        break;
+      case PREPARE_CORAL_STATION_INTAKE:
+        // TODO: Transition to CORAL_STATION_INTAKE when ready
+        break;
+      case PREPARE_SCORE:
+        // TODO: Transition to WAIT_SCORE when ready
+        break;
+      case PREPARE_IDLE:
+        // TODO: Transition to IDLE when ready
+        break;
+      case PREPARE_INTAKE:
+        // TODO: Transition to INTAKE when ready
+        break;
+      case SCORING:
+        // TODO: Transition back to PREPARE_IDLE after scoring
+        break;
+      case INTAKE:
+        // TODO: Handle what happens after intaking a game piece
+        break;
+      case CORAL_STATION_INTAKE:
+        // TODO: Handle what happens after intaking from coral station
+        break;
+    }
+
+    flags.clear();
+    return nextState;
   }
-  flags.clear();
-  return nextState;
-};
-  
 
   @Override
   protected void afterTransition(RobotState newState) {
+    // TODO: Set subsystem states based on the new robot state
+    // This is where you tell each subsystem what to do when the robot enters a new state
     switch (newState) {
       case PREPARE_INTAKE -> {
-        intakeRollers.setState(IntakeRollersState.INTAKE);
-        intakeWrist.setState(IntakeWristState.INTAKE);
+        // TODO: Set intake rollers and wrist to intake configuration
       }
       case PREPARE_CORAL_STATION_INTAKE -> {
-        intakeRollers.setState(IntakeRollersState.IDLE);
-        intakeWrist.setState(IntakeWristState.CORAL_STATION_INTAKE);
+        // TODO: Set intake rollers and wrist for coral station intake
       }
       case INTAKE -> {
-        intakeRollers.setState(IntakeRollersState.INTAKE);
-        intakeWrist.setState(IntakeWristState.INTAKE);
+        // TODO: Activate intake
       }
       case CORAL_STATION_INTAKE -> {
-        intakeRollers.setState(IntakeRollersState.CORAL_STATION_INTAKE);
-        intakeWrist.setState(IntakeWristState.CORAL_STATION_INTAKE);
+        // TODO: Activate coral station intake
       }
-      case PREPARE_IDLE ->{
-        intakeRollers.setState(IntakeRollersState.INTAKE);
-        intakeWrist.setState(IntakeWristState.IDLE);
+      case PREPARE_IDLE -> {
+        // TODO: Begin returning to idle position
       }
       case IDLE -> {
-        intakeRollers.setState(IntakeRollersState.IDLE);
-        intakeWrist.setState(IntakeWristState.IDLE);
+        // TODO: Set everything to idle
       }
-      case PREPARE_L1_ROW_1 -> {
-        intakeRollers.setState(IntakeRollersState.IDLE);
-        intakeWrist.setState(IntakeWristState.L1_ROW_1);
+      case PREPARE_SCORE -> {
+        // TODO: Move to scoring position
       }
-      case PREPARE_L1_ROW_2 -> {
-        intakeRollers.setState(IntakeRollersState.IDLE);
-        intakeWrist.setState(IntakeWristState.L1_ROW_2);
+      case WAIT_SCORE -> {
+        // TODO: Hold at scoring position
       }
-      case WAIT_L1_ROW_1 -> {
-        intakeRollers.setState(IntakeRollersState.IDLE);
-        intakeWrist.setState(IntakeWristState.L1_ROW_1);
-      }
-      case WAIT_L1_ROW_2 -> {
-        intakeRollers.setState(IntakeRollersState.IDLE);
-        intakeWrist.setState(IntakeWristState.L1_ROW_2);
-      }
-      case SCORE_L1_ROW_1 -> {
-        intakeRollers.setState(IntakeRollersState.SCORE_L1_ROW_1);
-      }
-      case SCORE_L1_ROW_2 -> {
-        intakeRollers.setState(IntakeRollersState.SCORE_L1_ROW_2);
-      }
-
-      
+      case SCORING -> {
+        // TODO: Eject the game piece
       }
     }
+  }
 
   @Override
   public void periodic() {
-    super.periodic(); 
+    super.periodic();
   }
 
   public void intakeRequest(){
@@ -188,29 +132,18 @@ public class RobotManager extends StateMachine<RobotState> {
     flags.check(RobotFlag.IDLE);
   }
 
-  public void prepareL1Row1Request() {
-    flags.check(RobotFlag.L1_ROW_1);
-  }
-
-  public void prepareL1Row2Request() {
-    flags.check(RobotFlag.L1_ROW_2);
+  public void prepareScoreRequest() {
+    flags.check(RobotFlag.PREPARE_SCORE);
   }
 
   public void scoreRequest(){
     flags.check(RobotFlag.SCORE);
   }
 
-  // public void stopScoringRequest() {
-  //   switch (getState()) {
-  //     case SCORE_L1_ROW_1-> {}
-  //     default -> setStateFromRequest(RobotState.IDLE);
-  //   }
-  // }
-
   private static RobotManager instance;
 
   public static RobotManager getInstance() {
-    if (instance == null) instance = new RobotManager(); // Make sure there is an instance (this will only run once)
+    if (instance == null) instance = new RobotManager();
     return instance;
-}
+  }
 }

@@ -8,8 +8,6 @@ import frc.robot.stateMachine.RobotManager;
 import frc.robot.drivers.Xbox;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
-import frc.robot.subsystems.intakeWrist.IntakeWristPositions;
-import frc.robot.subsystems.intakeWrist.IntakeWristSubsystem;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
@@ -82,13 +80,10 @@ public class Controls {
     }
 
     public void configureOperatorCommands(){
-        operator.Y().onTrue(Robot.robotCommands.L1Row1Command());
-        operator.A().onTrue(Robot.robotCommands.L1Row2Command());
+        // TODO: Configure operator controller bindings
+        // Example: operator.Y().onTrue(Robot.robotCommands.prepareScoreCommand());
         operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
-        operator.POV90().onTrue(runOnce(()-> IntakeWristSubsystem.getInstance().increaseSetpoint()));
-        operator.POVMinus90().onTrue(runOnce(()-> IntakeWristSubsystem.getInstance().decreaseSetpoint()));
         operator.rightBumper().onTrue(Robot.robotCommands.coralStationIntakeCommand());
         operator.rightBumper().onFalse(Robot.robotCommands.idleCommand());
-
     }
 }
