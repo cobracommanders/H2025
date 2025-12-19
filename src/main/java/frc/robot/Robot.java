@@ -15,18 +15,11 @@ import java.util.Optional;
 
 
 public class Robot extends TimedRobot{
-    // public static final double DEFAULT_PERIOD = 0.02;
-    // public final Timer setupTimer = new Timer();
-    // public double setupTime = 0;
-
     public static RobotManager robotManager = new RobotManager();
     public static RobotCommands robotCommands = new RobotCommands(robotManager);
-    // public static int coordinateFlip = 1;
-    // public static int rotationOffset = 0;
 
     public static Optional<Alliance> alliance = Optional.empty();
     public static final Controls controls = new Controls();
-
 
     @Override
     public void robotInit() {
@@ -34,10 +27,10 @@ public class Robot extends TimedRobot{
         controls.configureDriverCommands();
         controls.configureOperatorCommands();
 
-        IntakeWristSubsystem.getInstance().lMotor.setPosition(0);
-
+        // Initialize subsystems
         CommandSwerveDrivetrain.getInstance();
         IntakeRollersSubsystem.getInstance();
+        IntakeWristSubsystem.getInstance();
     }
 
     @Override
@@ -71,8 +64,6 @@ public class Robot extends TimedRobot{
 
     @Override
     public void disabledInit() {
-        //setupTimer.restart();
-        // drivetrain.enableBrakeMode(false);
     }
 
     @Override

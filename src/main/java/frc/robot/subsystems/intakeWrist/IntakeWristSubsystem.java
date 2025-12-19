@@ -47,7 +47,7 @@ public class IntakeWristSubsystem extends StateMachine<IntakeWristState>{
     // Apply the configuration to both motors using motor.getConfigurator().apply(config)
 
     // Initialize the encoder
-    encoder = new DutyCycleEncoder(0);
+    encoder = new DutyCycleEncoder(Ports.IntakeWristPorts.encoder);
 
     // Set the tolerance for position checking
     tolerance = 0.1;

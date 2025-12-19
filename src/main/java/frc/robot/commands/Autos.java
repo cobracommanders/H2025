@@ -8,10 +8,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public final class Autos {
-  /** Example static factory for an autonomous command. */
-  public static Command exampleAuto() {
-    return  null;//Commands.sequence(subsystem.exampleMethodCommand(), new ExampleCommand(subsystem));
-  }
+  // TODO: Define autonomous routines here
+  //
+  // Example:
+  // public static Command exampleAuto(RobotCommands commands) {
+  //   return Commands.sequence(
+  //     commands.intakeCommand(),
+  //     Commands.waitSeconds(2),
+  //     commands.scoreCommand()
+  //   );
+  // }
 
   private Autos() {
     throw new UnsupportedOperationException("This is a utility class!");

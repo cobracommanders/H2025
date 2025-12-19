@@ -114,20 +114,11 @@ src/main/java/frc/robot/
 4. `afterTransition()` tells each **subsystem** what state to be in
 5. Each subsystem's `afterTransition()` sets its motors based on its state
 
-## Building and Deploying
-
-```bash
-# Build the project
-./gradlew build
-
-# Deploy to the robot
-./gradlew deploy
-```
 
 ## Tips
 
-- Start by defining your states on paper before writing code
-- Implement one subsystem at a time and test it before moving on
+- Start by determining your state machines before writing code
+- Implement one subsystem at a time
 - Use the Driver Station and SmartDashboard/DogLog to debug
 - Check the example comments in each file for guidance
 - Ask mentors for help with hardware-specific values (motor directions, gear ratios, etc.)
