@@ -8,15 +8,20 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.RobotCommands;
 import frc.robot.stateMachine.RobotManager;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.intakeRollers.IntakeRollersCommands;
 import frc.robot.subsystems.intakeRollers.IntakeRollersSubsystem;
+import frc.robot.subsystems.intakeWrist.IntakeWristCommands;
 import frc.robot.subsystems.intakeWrist.IntakeWristSubsystem;
+import frc.robot.subsystems.intakeWrist.intakeWristCommands;
 
 import java.util.Optional;
 
 
 public class Robot extends TimedRobot{
     public static RobotManager robotManager = new RobotManager();
-    public static RobotCommands robotCommands = new RobotCommands(robotManager);
+    public static IntakeRollersCommands intakeRollers = new IntakeRollersCommands();
+    public static IntakeWristCommands intakeWrist= new IntakeWristCommands();
+    public static RobotCommands robotCommands = new RobotCommands(robotManager, intakeWrist, intakeRollers);
 
     public static Optional<Alliance> alliance = Optional.empty();
     public static final Controls controls = new Controls();

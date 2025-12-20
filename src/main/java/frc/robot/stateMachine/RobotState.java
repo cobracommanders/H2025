@@ -11,5 +11,7 @@ package frc.robot.stateMachine;
 //   WAIT_SCORE - at scoring position, waiting for trigger
 //   SCORING - actively ejecting game piece
 public enum RobotState {
-
+    IDLE,
+    INTAKE,
+    SCORE
 }
