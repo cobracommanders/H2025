@@ -1,17 +1,14 @@
 package frc.robot.stateMachine;
-import frc.robot.subsystems.intakeRollers.IntakeRollersSubsystem;
-import frc.robot.subsystems.intakeWrist.IntakeWristSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 
 public class RobotManager extends StateMachine<RobotState> {
-  public final IntakeRollersSubsystem intakeRollers;
-  public final IntakeWristSubsystem intakeWrist;
+  public final ShooterSubsystem intakeRollers;
 
   public final FlagManager<RobotFlag> flags = new FlagManager<>("RobotManager", RobotFlag.class);
 
   public RobotManager() {
       super(null); // TODO: Pass your initial state here once you define states
-      this.intakeRollers = IntakeRollersSubsystem.getInstance();
-      this.intakeWrist = IntakeWristSubsystem.getInstance();
+      this.intakeRollers = ShooterSubsystem.getInstance();
   }
 
   @Override

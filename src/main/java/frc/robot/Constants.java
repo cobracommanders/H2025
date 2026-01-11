@@ -15,7 +15,7 @@ public final class Constants {
     public static final int OPERATOR_CONTROLLER_ID = 1;
   }
 
-  public static final class intakeWristConstants {
+  public static final class shooterConstants {
     public static final double P = 60;
     public static final double I = 2;
     public static final double D = 2;
@@ -23,9 +23,5 @@ public final class Constants {
     public static final double MotionMagicAcceleration = 3;
     public static final double MotionMagicCruiseVelocity = 10;
     public static final double MotionMagicJerk = 10;
-  }
-
-  public static final class intakeRollersConstants {
-    public static final double stallCurrent = 150;
   }
 }

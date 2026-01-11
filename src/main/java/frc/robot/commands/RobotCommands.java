@@ -12,7 +12,7 @@ public class RobotCommands {
 
   public RobotCommands(RobotManager robot) {
     this.robot = robot;
-    var requirementsList = List.of(robot.intakeRollers, robot.intakeWrist);
+    var requirementsList = List.of(robot.intakeRollers);
     requirements = requirementsList.toArray(Subsystem[]::new);
   }
 

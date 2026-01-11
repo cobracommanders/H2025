@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.RobotCommands;
 import frc.robot.stateMachine.RobotManager;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
-import frc.robot.subsystems.intakeRollers.IntakeRollersSubsystem;
-import frc.robot.subsystems.intakeWrist.IntakeWristSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 
 import java.util.Optional;
 
@@ -29,8 +28,7 @@ public class Robot extends TimedRobot{
 
         // Initialize subsystems
         CommandSwerveDrivetrain.getInstance();
-        IntakeRollersSubsystem.getInstance();
-        IntakeWristSubsystem.getInstance();
+        ShooterSubsystem.getInstance();
     }
 
     @Override

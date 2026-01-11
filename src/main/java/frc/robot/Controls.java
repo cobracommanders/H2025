@@ -9,6 +9,8 @@ import frc.robot.stateMachine.RobotManager;
 import frc.robot.drivers.Xbox;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
+import frc.robot.subsystems.shooter.ShooterState;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
@@ -70,13 +72,16 @@ public class Controls {
         // Reset gyro heading
         driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
 
+        driver.rightTrigger().onTrue(runOnce(() -> ShooterSubsystem.getInstance().setState(ShooterState.OFF)));
+        driver.leftTrigger().onTrue(runOnce(() -> ShooterSubsystem.getInstance().setState(ShooterState.ON)));
+
         // TODO: Bind driver controls to commands
         // Example:
         // driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
         // driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
 
         // Brake and point wheels
-        driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
+        //driver.X().whileTrue(runOnce(() -> drivetrain.applyRequest(() -> drivetrain.brake)));
         driver.Y().whileTrue(drivetrain.applyRequest(() -> drivetrain.point.withModuleDirection(new Rotation2d(-(driver.leftY()*.5), -(driver.leftX()*.5)))));
 
         // Slow mode
